@@ -7,15 +7,17 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppMaterialModule } from './app-material.module';
-import { FirstLabComponent } from './labs/first/firstlab.component';
+import { FirstLabComponent} from './labs/first/firstlab.component';
 import { FormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { SecondLabComponent } from './labs/second/secondlab.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FirstLabComponent
+    FirstLabComponent,
+    SecondLabComponent
   ],
   imports: [
     BrowserModule,

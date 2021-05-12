@@ -16,6 +16,9 @@ var animations_1 = require("@angular/platform-browser/animations");
 var app_material_module_1 = require("./app-material.module");
 var firstlab_component_1 = require("./labs/first/firstlab.component");
 var forms_1 = require("@angular/forms");
+var service_worker_1 = require("@angular/service-worker");
+var environment_1 = require("../environments/environment");
+var secondlab_component_1 = require("./labs/second/secondlab.component");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -23,7 +26,8 @@ var AppModule = /** @class */ (function () {
         core_1.NgModule({
             declarations: [
                 app_component_1.AppComponent,
-                firstlab_component_1.FirstLabComponent
+                firstlab_component_1.FirstLabComponent,
+                secondlab_component_1.SecondLabComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -31,7 +35,13 @@ var AppModule = /** @class */ (function () {
                 app_routing_module_1.AppRoutingModule,
                 animations_1.BrowserAnimationsModule,
                 app_material_module_1.AppMaterialModule,
-                forms_1.FormsModule
+                forms_1.FormsModule,
+                service_worker_1.ServiceWorkerModule.register('ngsw-worker.js', {
+                    enabled: environment_1.environment.production,
+                    // Register the ServiceWorker as soon as the app is stable
+                    // or after 30 seconds (whichever comes first).
+                    registrationStrategy: 'registerWhenStable:30000'
+                })
             ],
             providers: [],
             bootstrap: [app_component_1.AppComponent]
