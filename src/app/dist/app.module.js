@@ -19,6 +19,8 @@ var forms_1 = require("@angular/forms");
 var service_worker_1 = require("@angular/service-worker");
 var environment_1 = require("../environments/environment");
 var secondlab_component_1 = require("./labs/second/secondlab.component");
+var thirdlab_component_1 = require("./labs/third/thirdlab.component");
+var fourthlab_component_1 = require("./labs/fourth/fourthlab.component");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -27,7 +29,9 @@ var AppModule = /** @class */ (function () {
             declarations: [
                 app_component_1.AppComponent,
                 firstlab_component_1.FirstLabComponent,
-                secondlab_component_1.SecondLabComponent
+                secondlab_component_1.SecondLabComponent,
+                thirdlab_component_1.ThirdlabComponent,
+                fourthlab_component_1.FourthlabComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,

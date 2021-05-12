@@ -12,8 +12,8 @@ import { FormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { SecondLabComponent } from './labs/second/secondlab.component';
-import { ThirdlabComponent } from './labs/third/thirdlab/thirdlab.component';
-import { FourthlabComponent } from './labs/fourthlab/fourthlab.component';
+import { ThirdlabComponent } from './labs/third/thirdlab.component';
+import { FourthlabComponent } from './labs/fourth/fourthlab.component';
 
 @NgModule({
   declarations: [
