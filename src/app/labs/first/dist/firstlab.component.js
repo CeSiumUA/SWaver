@@ -114,8 +114,6 @@ var FirstLabComponent = /** @class */ (function () {
     FirstLabComponent.prototype.showValue = function (val) {
         return val.toString();
     };
-    FirstLabComponent.prototype.ngOnInit = function () {
-    };
     FirstLabComponent = __decorate([
         core_1.Component({
             selector: 'firstlab-app',

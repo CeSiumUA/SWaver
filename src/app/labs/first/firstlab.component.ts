@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { utils } from 'protractor';
 import { MetricPrefixes, Utilities, lightSpeed } from '../../../math/values';
 import { FirstLabCalculation } from '../../../math/firstLabFormulas';
@@ -8,15 +8,15 @@ import { FirstLabCalculation } from '../../../math/firstLabFormulas';
     templateUrl: './firstlab.component.html',
     styleUrls: ['./firstlab.component.css']
 })
-export class FirstLabComponent implements OnInit{
+export class FirstLabComponent{
 
     public isDistanceSetMode = true;
 
-    public frequency: number = 50;
-    public frequencyMap: string = 'M';
-    
-    public transmitterPower: number = 10;
-    public transmitterPowerMap: string = 'One';
+    public frequency = 50;
+    public frequencyMap = 'M';
+
+    public transmitterPower = 10;
+    public transmitterPowerMap = 'One';
 
     public transmitterDirectionalFactor = 3;
     public transmitterSWR = 1.2;
@@ -44,7 +44,7 @@ export class FirstLabComponent implements OnInit{
         return this.isDistanceSetMode ? 'Задання відстані' : 'Задання чутливості приймача';
     }
     public get valuesMap(): string[]{
-        let valsmap = Object.keys(MetricPrefixes)
+        const valsmap = Object.keys(MetricPrefixes)
         .filter(val => isNaN(Number(val)) === false)
         .map(key => MetricPrefixes[Number(key)]);
         return valsmap;
@@ -107,7 +107,5 @@ export class FirstLabComponent implements OnInit{
     }
     public showValue(val: number | string): string{
         return val.toString();
-    }
-    ngOnInit(): void{
     }
 }
