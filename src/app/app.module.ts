@@ -12,12 +12,14 @@ import { FormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { SecondLabComponent } from './labs/second/secondlab.component';
+import { ThirdlabComponent } from './labs/third/thirdlab/thirdlab.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FirstLabComponent,
-    SecondLabComponent
+    SecondLabComponent,
+    ThirdlabComponent
   ],
   imports: [
     BrowserModule,

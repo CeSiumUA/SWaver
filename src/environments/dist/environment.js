@@ -5,7 +5,7 @@
 exports.__esModule = true;
 exports.environment = void 0;
 exports.environment = {
-    tab: 1,
+    tab: 2,
     production: false
 };
 /*
