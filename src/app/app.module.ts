@@ -13,13 +13,15 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { SecondLabComponent } from './labs/second/secondlab.component';
 import { ThirdlabComponent } from './labs/third/thirdlab/thirdlab.component';
+import { FourthlabComponent } from './labs/fourthlab/fourthlab.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FirstLabComponent,
     SecondLabComponent,
-    ThirdlabComponent
+    ThirdlabComponent,
+    FourthlabComponent
   ],
   imports: [
     BrowserModule,

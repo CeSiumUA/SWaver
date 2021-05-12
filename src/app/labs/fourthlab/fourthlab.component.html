@@ -1,0 +1,95 @@
+<mat-card class="resultForm mainFormLeft">
+    <mat-card-header>
+        <mat-card-title>ДОСЛІДЖЕННЯ ПОШИРЕННЯ РАДІОХВИЛЬ У ТРОПОСФЕРІ</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <table class="fullWidthField fieldsTable" cellspacing="0">
+            <tr>
+                <td colspan="1">
+                    <mat-form-field class="fullWidthField">
+                        <mat-label>Перший кут від горизонту</mat-label>
+                        <input matInput type="number" [(ngModel)]="firstHorizontAngle" value="0">
+                    </mat-form-field>
+                </td>
+                <td colspan="1">
+                    <mat-slider class="fullWidthField"
+                        thumbLabel
+                        [displayWith]="showValue"
+                        step="0.1"
+                        color="primary"
+                        min="0"
+                        [(ngModel)]="firstHorizontAngle"
+                        max="360"
+                        aria-label="units"></mat-slider>
+                </td>
+            </tr>
+        </table>
+        <table class="fullWidthField fieldsTable" cellspacing="0">
+            <tr>
+                <td colspan="1">
+                    <mat-form-field class="fullWidthField">
+                        <mat-label>Другий кут від горизонту</mat-label>
+                        <input matInput type="number" [(ngModel)]="secondHorizontAngle" value="0">
+                    </mat-form-field>
+                </td>
+                <td colspan="1">
+                    <mat-slider class="fullWidthField"
+                        thumbLabel
+                        [displayWith]="showValue"
+                        step="0.1"
+                        color="primary"
+                        min="0"
+                        [(ngModel)]="secondHorizontAngle"
+                        max="360"
+                        aria-label="units"></mat-slider>
+                </td>
+            </tr>
+        </table>
+        <table class="fullWidthField fieldsTable" cellspacing="0">
+            <tr>
+                <td colspan="1">
+                    <mat-form-field class="fullWidthField">
+                        <mat-label style="font-size: 16px;">Δε, 10<sup>4</sup></mat-label>
+                        <input matInput type="number" [(ngModel)]="delta" value="0">
+                    </mat-form-field>
+                </td>
+                <td colspan="1">
+                    <mat-slider class="fullWidthField"
+                        thumbLabel
+                        [displayWith]="showValue"
+                        step="0.1"
+                        color="primary"
+                        min="0"
+                        [(ngModel)]="delta"
+                        max="1000"
+                        aria-label="units"></mat-slider>
+                </td>
+            </tr>
+        </table>
+        <table class="fullWidthField fieldsTable" cellspacing="0">
+            <tr>
+                <td colspan="1">
+                    <mat-form-field class="fullWidthField">
+                        <mat-label style="font-size: 16px;">Градієнт, 10<sup>8</sup></mat-label>
+                        <input matInput type="number" [(ngModel)]="graient" value="0">
+                    </mat-form-field>
+                </td>
+                <td colspan="1">
+                    <mat-slider class="fullWidthField"
+                        thumbLabel
+                        [displayWith]="showValue"
+                        step="0.1"
+                        color="primary"
+                        min="0"
+                        [(ngModel)]="graient"
+                        max="1000"
+                        aria-label="units"></mat-slider>
+                </td>
+            </tr>
+        </table>
+    </mat-card-content>
+</mat-card>
+
+<div style="display: block; ">
+    <canvas baseChart id="fourthCanvas1"></canvas>
+</div>
