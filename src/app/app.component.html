@@ -4,21 +4,33 @@
 <mat-tab-group [selectedIndex]="defaultTab" dynamicHeight>
   <mat-tab label="ДОСЛІДЖЕННЯ ПОШИРЕННЯ РАДІОХВИЛЬ
   У ВІЛЬНОМУ ПРОСТОРІ">
-    <firstlab-app></firstlab-app>
+    <ng-template matTabContent>
+      <firstlab-app></firstlab-app>
+    </ng-template>
   </mat-tab>
   <mat-tab label="ДОСЛІДЖЕННЯ ОБЛАСТІ ПРОСТОРУ, ЯКА Є
   ІСТОТНОЮ ПРИ ПОШИРЕННІ РАДІОХВИЛЬ.
   ЗОНИ ФРЕНЕЛЯ">
-    <secondlab-app></secondlab-app>
+    <ng-template matTabContent>
+      <secondlab-app></secondlab-app>
+    </ng-template>
   </mat-tab>
   <mat-tab label="ДОСЛІДЖЕННЯ ПОШИРЕННЯ РАДІОХВИЛЬ
   ПОБЛИЗУ ПОВЕРХНІ ЗЕМЛІ">
-    <app-thirdlab></app-thirdlab>
+    <ng-template matTabContent>
+      <app-thirdlab></app-thirdlab>
+    </ng-template>
   </mat-tab>
   <mat-tab label="ДОСЛІДЖЕННЯ ПОШИРЕННЯ РАДІОХВИЛЬ
   У ТРОПОСФЕРІ">
-    <app-fourthlab></app-fourthlab>
+    <ng-template matTabContent>
+      <app-fourthlab></app-fourthlab>
+    </ng-template>
   </mat-tab>
   <mat-tab label="ДОСЛІДЖЕННЯ ПОШИРЕННЯ РАДІОХВИЛЬ
-  В ІОНОСФЕРІ">3</mat-tab>
+  В ІОНОСФЕРІ">
+    <ng-template matTabContent>
+      5
+    </ng-template>
+  </mat-tab>
 </mat-tab-group>
