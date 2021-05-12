@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ChartDataset } from 'chart.js';
 import { ChartConfiguration } from 'chart.js';
 import { /* ChartDataSets, */ ChartOptions, ChartType, Chart, registerables } from 'chart.js';
+import { environment } from 'src/environments/environment';
 
 import { GraphPoint } from '../models/GraphPoint';
 
@@ -22,6 +23,9 @@ export class AppComponent implements OnInit {
   constructor(private httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string){
     Chart.register(...registerables);
     this.baseUrl = baseUrl;
+  }
+  public get defaultTab(): number{
+    return environment.tab;
   }
   private drawGraph(): void{
     const config: ChartConfiguration = {

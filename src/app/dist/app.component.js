@@ -12,6 +12,7 @@ exports.__esModule = true;
 exports.AppComponent = void 0;
 var core_1 = require("@angular/core");
 var chart_js_1 = require("chart.js");
+var environment_1 = require("src/environments/environment");
 var AppComponent = /** @class */ (function () {
     function AppComponent(httpClient, baseUrl) {
         this.httpClient = httpClient;
@@ -24,6 +25,13 @@ var AppComponent = /** @class */ (function () {
         get: function () {
             var pointsCollection = this.points.map(function (pnt) { return (Math.round(pnt.x * 10) / 10).toString(); });
             return pointsCollection;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(AppComponent.prototype, "defaultTab", {
+        get: function () {
+            return environment_1.environment.tab;
         },
         enumerable: false,
         configurable: true
