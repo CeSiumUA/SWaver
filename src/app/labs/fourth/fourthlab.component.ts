@@ -11,10 +11,53 @@ import { FourthLabCalculation } from '../../../math/fourthLabFormulas';
 })
 export class FourthlabComponent implements OnInit {
 
-  public firstHorizontAngle = 0.4;
-  public secondHorizontAngle = 1.3;
-  public delta = 2;
-  public graient = 4;
+  public _horizontAngle = 0.4;
+  public _delta = 2;
+  public _graient = 4;
+
+  private firstChart?: Chart;
+
+  private _userStandartParameters: boolean = false;
+
+  public get userStandartParameters(): boolean {
+    return this._userStandartParameters;
+  }
+
+  public set userStandartParameters(value: boolean){
+    this._userStandartParameters = value;
+    this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
+    this.firstChart?.update();
+  }
+
+  public get horizontAngle(): number {
+    return this._horizontAngle;
+  }
+
+  public set horizontAngle(value: number) {
+    this._horizontAngle = value;
+    this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
+    this.firstChart?.update();
+  }
+
+  public get gradient(): number {
+    return this._graient;
+  }
+
+  public set gradient(value: number) {
+    this._graient = value;
+    this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
+    this.firstChart?.update();
+  }
+
+  public get delta(): number {
+    return this._delta;
+  }
+
+  public set delta(value: number) {
+    this._delta = value;
+    this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
+    this.firstChart?.update();
+  }
 
   private perneabilityGraphConfig: ChartConfiguration = {
     type: 'line',
@@ -49,16 +92,16 @@ export class FourthlabComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      const context = (document.getElementById('fourthCanvas1') as HTMLCanvasElement).getContext('2d');
-      if(context) {
-        const myChart = new Chart(
-          context,
-          this.perneabilityGraphConfig
-        );
-      }
-    }, 2000);
-
+    let context = (document.getElementById('fourthCanvas1') as HTMLCanvasElement)?.getContext('2d');
+    while(context === null){
+      context = (document.getElementById('fourthCanvas1') as HTMLCanvasElement)?.getContext('2d');
+    }
+    if(context) {
+      this.firstChart = new Chart(
+        context,
+        this.perneabilityGraphConfig
+      );
+    }
   }
 
   public get valuesMap(): string[]{
@@ -89,7 +132,15 @@ export class FourthlabComponent implements OnInit {
   }
 
   private get PerneabilityChartPoints(): number[]{
-    return FourthLabCalculation.CalculateRelativeDielectricPerneabilityGrapg(this.PerneabilityChartBounds).map(pnt => pnt.y);
+    if(this.userStandartParameters){
+      return FourthLabCalculation.CalculateRelativeDielectricPerneabilityGrapg(this.PerneabilityChartBounds).map(pnt => pnt.y);
+    }
+    return FourthLabCalculation.CalculateRelativeDielectricPerneabilityGrapg(this.PerneabilityChartBounds,
+       this.delta * Math.pow(10, -4), (-1 * this.gradient * Math.pow(10, -8))).map(pnt => pnt.y);
+  }
+
+  public get standartParameterToggleLabel(): string {
+    return this.userStandartParameters ? 'Нормальна' : 'Довільна';
   }
 
   public showValue(val: number | string): string{

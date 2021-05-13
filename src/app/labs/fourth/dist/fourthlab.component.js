@@ -13,10 +13,10 @@ var values_1 = require("src/math/values");
 var fourthLabFormulas_1 = require("../../../math/fourthLabFormulas");
 var FourthlabComponent = /** @class */ (function () {
     function FourthlabComponent() {
-        this.firstHorizontAngle = 0.4;
-        this.secondHorizontAngle = 1.3;
-        this.delta = 2;
-        this.graient = 4;
+        this._horizontAngle = 0.4;
+        this._delta = 2;
+        this._graient = 4;
+        this._userStandartParameters = false;
         this.perneabilityGraphConfig = {
             type: 'line',
             data: {
@@ -47,14 +47,67 @@ var FourthlabComponent = /** @class */ (function () {
             }
         };
     }
+    Object.defineProperty(FourthlabComponent.prototype, "userStandartParameters", {
+        get: function () {
+            return this._userStandartParameters;
+        },
+        set: function (value) {
+            var _a;
+            this._userStandartParameters = value;
+            this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
+            (_a = this.firstChart) === null || _a === void 0 ? void 0 : _a.update();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FourthlabComponent.prototype, "horizontAngle", {
+        get: function () {
+            return this._horizontAngle;
+        },
+        set: function (value) {
+            var _a;
+            this._horizontAngle = value;
+            this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
+            (_a = this.firstChart) === null || _a === void 0 ? void 0 : _a.update();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FourthlabComponent.prototype, "gradient", {
+        get: function () {
+            return this._graient;
+        },
+        set: function (value) {
+            var _a;
+            this._graient = value;
+            this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
+            (_a = this.firstChart) === null || _a === void 0 ? void 0 : _a.update();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FourthlabComponent.prototype, "delta", {
+        get: function () {
+            return this._delta;
+        },
+        set: function (value) {
+            var _a;
+            this._delta = value;
+            this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
+            (_a = this.firstChart) === null || _a === void 0 ? void 0 : _a.update();
+        },
+        enumerable: false,
+        configurable: true
+    });
     FourthlabComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        setTimeout(function () {
-            var context = document.getElementById('fourthCanvas1').getContext('2d');
-            if (context) {
-                var myChart = new chart_js_1.Chart(context, _this.perneabilityGraphConfig);
-            }
-        }, 2000);
+        var _a, _b;
+        var context = (_a = document.getElementById('fourthCanvas1')) === null || _a === void 0 ? void 0 : _a.getContext('2d');
+        while (context === null) {
+            context = (_b = document.getElementById('fourthCanvas1')) === null || _b === void 0 ? void 0 : _b.getContext('2d');
+        }
+        if (context) {
+            this.firstChart = new chart_js_1.Chart(context, this.perneabilityGraphConfig);
+        }
     };
     Object.defineProperty(FourthlabComponent.prototype, "valuesMap", {
         get: function () {
@@ -91,7 +144,17 @@ var FourthlabComponent = /** @class */ (function () {
     });
     Object.defineProperty(FourthlabComponent.prototype, "PerneabilityChartPoints", {
         get: function () {
-            return fourthLabFormulas_1.FourthLabCalculation.CalculateRelativeDielectricPerneabilityGrapg(this.PerneabilityChartBounds).map(function (pnt) { return pnt.y; });
+            if (this.userStandartParameters) {
+                return fourthLabFormulas_1.FourthLabCalculation.CalculateRelativeDielectricPerneabilityGrapg(this.PerneabilityChartBounds).map(function (pnt) { return pnt.y; });
+            }
+            return fourthLabFormulas_1.FourthLabCalculation.CalculateRelativeDielectricPerneabilityGrapg(this.PerneabilityChartBounds, this.delta * Math.pow(10, -4), (-1 * this.gradient * Math.pow(10, -8))).map(function (pnt) { return pnt.y; });
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FourthlabComponent.prototype, "standartParameterToggleLabel", {
+        get: function () {
+            return this.userStandartParameters ? 'Нормальна' : 'Довільна';
         },
         enumerable: false,
         configurable: true
