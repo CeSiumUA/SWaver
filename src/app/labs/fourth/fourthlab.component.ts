@@ -16,8 +16,9 @@ export class FourthlabComponent implements OnInit {
   public _graient = 4;
 
   private firstChart?: Chart;
+  private secondChart?: Chart;
 
-  private _userStandartParameters: boolean = false;
+  private _userStandartParameters: boolean = true;
 
   public get userStandartParameters(): boolean {
     return this._userStandartParameters;
@@ -26,6 +27,9 @@ export class FourthlabComponent implements OnInit {
   public set userStandartParameters(value: boolean){
     this._userStandartParameters = value;
     this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
+    this.heightGraphConfig.data.labels = this.DistanceChartPoints;
+    this.heightGraphConfig.data.datasets[0].data = this.HeightChartBounds;
+    this.secondChart?.update();
     this.firstChart?.update();
   }
 
@@ -36,6 +40,9 @@ export class FourthlabComponent implements OnInit {
   public set horizontAngle(value: number) {
     this._horizontAngle = value;
     this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
+    this.heightGraphConfig.data.labels = this.DistanceChartPoints;
+    this.heightGraphConfig.data.datasets[0].data = this.HeightChartBounds;
+    this.secondChart?.update();
     this.firstChart?.update();
   }
 
@@ -46,6 +53,9 @@ export class FourthlabComponent implements OnInit {
   public set gradient(value: number) {
     this._graient = value;
     this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
+    this.heightGraphConfig.data.labels = this.DistanceChartPoints;
+    this.heightGraphConfig.data.datasets[0].data = this.HeightChartBounds;
+    this.secondChart?.update();
     this.firstChart?.update();
   }
 
@@ -56,6 +66,9 @@ export class FourthlabComponent implements OnInit {
   public set delta(value: number) {
     this._delta = value;
     this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
+    this.heightGraphConfig.data.labels = this.DistanceChartPoints;
+    this.heightGraphConfig.data.datasets[0].data = this.HeightChartBounds;
+    this.secondChart?.update();
     this.firstChart?.update();
   }
 
@@ -89,17 +102,55 @@ export class FourthlabComponent implements OnInit {
     }
   };
 
+  private heightGraphConfig: ChartConfiguration = {
+    type: 'line',
+    data: {
+      labels: this.DistanceChartPoints,
+      datasets: [{
+        label: 'Залежність пройденої відстані від висоти',
+        backgroundColor: 'rgb(255, 90, 132)',
+        borderColor: 'rgb(255, 90, 132)',
+        data: this.HeightChartBounds
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+            beginAtZero: true,
+        },
+      },
+      plugins: {
+        tooltip: {
+          enabled: true,
+          callbacks: {
+            label: (a) => {
+              return `Висота: ${a.raw}`;
+            }
+          }
+        }
+      }
+    }
+  };
+
   constructor() { }
 
   ngOnInit(): void {
-    let context = (document.getElementById('fourthCanvas1') as HTMLCanvasElement)?.getContext('2d');
-    while(context === null){
-      context = (document.getElementById('fourthCanvas1') as HTMLCanvasElement)?.getContext('2d');
+    let context1 = (document.getElementById('fourthCanvas1') as HTMLCanvasElement)?.getContext('2d');
+    let context2 = (document.getElementById('fourthCanvas2') as HTMLCanvasElement)?.getContext('2d');
+    while(context1 === null || context2 === null){
+      context1 = (document.getElementById('fourthCanvas1') as HTMLCanvasElement)?.getContext('2d');
+      context2 = (document.getElementById('fourthCanvas2') as HTMLCanvasElement)?.getContext('2d');
     }
-    if(context) {
+    if(context1) {
       this.firstChart = new Chart(
-        context,
+        context1,
         this.perneabilityGraphConfig
+      );
+    }
+    if(context2) {
+      this.secondChart = new Chart(
+        context2,
+        this.heightGraphConfig
       );
     }
   }
@@ -129,6 +180,22 @@ export class FourthlabComponent implements OnInit {
                     4200, 4300, 4400,
                      4500, 4600, 4700,
                       4800, 4900, 5000]
+  }
+
+  private get HeightChartBounds(): number[] {
+    const heights: number[] = [];
+    for(let i = 0; i < 15000; i += 500){
+      heights.push(i);
+    }
+    return heights;
+  }
+
+  private get DistanceChartPoints(): number[] {
+    if(this.userStandartParameters){
+      return FourthLabCalculation.CalculateDistanceGraph(this.PerneabilityChartBounds, this.horizontAngle).map(pnt => pnt.y);
+    }
+    return FourthLabCalculation.CalculateDistanceGraph(this.PerneabilityChartBounds, this.horizontAngle,
+       this.delta * Math.pow(10, -4), (-1 * this.gradient * Math.pow(10, -8))).map(pnt => pnt.y);
   }
 
   private get PerneabilityChartPoints(): number[]{

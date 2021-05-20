@@ -16,7 +16,7 @@ var FourthlabComponent = /** @class */ (function () {
         this._horizontAngle = 0.4;
         this._delta = 2;
         this._graient = 4;
-        this._userStandartParameters = false;
+        this._userStandartParameters = true;
         this.perneabilityGraphConfig = {
             type: 'line',
             data: {
@@ -46,16 +46,48 @@ var FourthlabComponent = /** @class */ (function () {
                 }
             }
         };
+        this.heightGraphConfig = {
+            type: 'line',
+            data: {
+                labels: this.DistanceChartPoints,
+                datasets: [{
+                        label: 'Залежність пройденої відстані від висоти',
+                        backgroundColor: 'rgb(255, 90, 132)',
+                        borderColor: 'rgb(255, 90, 132)',
+                        data: this.HeightChartBounds
+                    }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: function (a) {
+                                return "\u0412\u0438\u0441\u043E\u0442\u0430: " + a.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        };
     }
     Object.defineProperty(FourthlabComponent.prototype, "userStandartParameters", {
         get: function () {
             return this._userStandartParameters;
         },
         set: function (value) {
-            var _a;
+            var _a, _b;
             this._userStandartParameters = value;
             this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
-            (_a = this.firstChart) === null || _a === void 0 ? void 0 : _a.update();
+            this.heightGraphConfig.data.labels = this.DistanceChartPoints;
+            this.heightGraphConfig.data.datasets[0].data = this.HeightChartBounds;
+            (_a = this.secondChart) === null || _a === void 0 ? void 0 : _a.update();
+            (_b = this.firstChart) === null || _b === void 0 ? void 0 : _b.update();
         },
         enumerable: false,
         configurable: true
@@ -65,10 +97,13 @@ var FourthlabComponent = /** @class */ (function () {
             return this._horizontAngle;
         },
         set: function (value) {
-            var _a;
+            var _a, _b;
             this._horizontAngle = value;
             this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
-            (_a = this.firstChart) === null || _a === void 0 ? void 0 : _a.update();
+            this.heightGraphConfig.data.labels = this.DistanceChartPoints;
+            this.heightGraphConfig.data.datasets[0].data = this.HeightChartBounds;
+            (_a = this.secondChart) === null || _a === void 0 ? void 0 : _a.update();
+            (_b = this.firstChart) === null || _b === void 0 ? void 0 : _b.update();
         },
         enumerable: false,
         configurable: true
@@ -78,10 +113,13 @@ var FourthlabComponent = /** @class */ (function () {
             return this._graient;
         },
         set: function (value) {
-            var _a;
+            var _a, _b;
             this._graient = value;
             this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
-            (_a = this.firstChart) === null || _a === void 0 ? void 0 : _a.update();
+            this.heightGraphConfig.data.labels = this.DistanceChartPoints;
+            this.heightGraphConfig.data.datasets[0].data = this.HeightChartBounds;
+            (_a = this.secondChart) === null || _a === void 0 ? void 0 : _a.update();
+            (_b = this.firstChart) === null || _b === void 0 ? void 0 : _b.update();
         },
         enumerable: false,
         configurable: true
@@ -91,22 +129,30 @@ var FourthlabComponent = /** @class */ (function () {
             return this._delta;
         },
         set: function (value) {
-            var _a;
+            var _a, _b;
             this._delta = value;
             this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
-            (_a = this.firstChart) === null || _a === void 0 ? void 0 : _a.update();
+            this.heightGraphConfig.data.labels = this.DistanceChartPoints;
+            this.heightGraphConfig.data.datasets[0].data = this.HeightChartBounds;
+            (_a = this.secondChart) === null || _a === void 0 ? void 0 : _a.update();
+            (_b = this.firstChart) === null || _b === void 0 ? void 0 : _b.update();
         },
         enumerable: false,
         configurable: true
     });
     FourthlabComponent.prototype.ngOnInit = function () {
-        var _a, _b;
-        var context = (_a = document.getElementById('fourthCanvas1')) === null || _a === void 0 ? void 0 : _a.getContext('2d');
-        while (context === null) {
-            context = (_b = document.getElementById('fourthCanvas1')) === null || _b === void 0 ? void 0 : _b.getContext('2d');
+        var _a, _b, _c, _d;
+        var context1 = (_a = document.getElementById('fourthCanvas1')) === null || _a === void 0 ? void 0 : _a.getContext('2d');
+        var context2 = (_b = document.getElementById('fourthCanvas2')) === null || _b === void 0 ? void 0 : _b.getContext('2d');
+        while (context1 === null || context2 === null) {
+            context1 = (_c = document.getElementById('fourthCanvas1')) === null || _c === void 0 ? void 0 : _c.getContext('2d');
+            context2 = (_d = document.getElementById('fourthCanvas2')) === null || _d === void 0 ? void 0 : _d.getContext('2d');
         }
-        if (context) {
-            this.firstChart = new chart_js_1.Chart(context, this.perneabilityGraphConfig);
+        if (context1) {
+            this.firstChart = new chart_js_1.Chart(context1, this.perneabilityGraphConfig);
+        }
+        if (context2) {
+            this.secondChart = new chart_js_1.Chart(context2, this.heightGraphConfig);
         }
     };
     Object.defineProperty(FourthlabComponent.prototype, "valuesMap", {
@@ -138,6 +184,27 @@ var FourthlabComponent = /** @class */ (function () {
                 4200, 4300, 4400,
                 4500, 4600, 4700,
                 4800, 4900, 5000];
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FourthlabComponent.prototype, "HeightChartBounds", {
+        get: function () {
+            var heights = [];
+            for (var i = 0; i < 15000; i += 500) {
+                heights.push(i);
+            }
+            return heights;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FourthlabComponent.prototype, "DistanceChartPoints", {
+        get: function () {
+            if (this.userStandartParameters) {
+                return fourthLabFormulas_1.FourthLabCalculation.CalculateDistanceGraph(this.PerneabilityChartBounds, this.horizontAngle).map(function (pnt) { return pnt.y; });
+            }
+            return fourthLabFormulas_1.FourthLabCalculation.CalculateDistanceGraph(this.PerneabilityChartBounds, this.horizontAngle, this.delta * Math.pow(10, -4), (-1 * this.gradient * Math.pow(10, -8))).map(function (pnt) { return pnt.y; });
         },
         enumerable: false,
         configurable: true
