@@ -191,7 +191,7 @@ var FourthlabComponent = /** @class */ (function () {
     Object.defineProperty(FourthlabComponent.prototype, "HeightChartBounds", {
         get: function () {
             var heights = [];
-            for (var i = 0; i < 15000; i += 500) {
+            for (var i = 0; i < 10000; i += 500) {
                 heights.push(i);
             }
             return heights;
@@ -202,9 +202,9 @@ var FourthlabComponent = /** @class */ (function () {
     Object.defineProperty(FourthlabComponent.prototype, "DistanceChartPoints", {
         get: function () {
             if (this.userStandartParameters) {
-                return fourthLabFormulas_1.FourthLabCalculation.CalculateDistanceGraph(this.PerneabilityChartBounds, this.horizontAngle).map(function (pnt) { return pnt.y; });
+                return fourthLabFormulas_1.FourthLabCalculation.CalculateDistanceGraph(this.HeightChartBounds, this.horizontAngle).map(function (pnt) { return pnt.x; });
             }
-            return fourthLabFormulas_1.FourthLabCalculation.CalculateDistanceGraph(this.PerneabilityChartBounds, this.horizontAngle, this.delta * Math.pow(10, -4), (-1 * this.gradient * Math.pow(10, -8))).map(function (pnt) { return pnt.y; });
+            return fourthLabFormulas_1.FourthLabCalculation.CalculateDistanceGraph(this.HeightChartBounds, this.horizontAngle, this.delta * Math.pow(10, -4), (-1 * this.gradient * Math.pow(10, -8))).map(function (pnt) { return pnt.x; });
         },
         enumerable: false,
         configurable: true

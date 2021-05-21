@@ -184,7 +184,7 @@ export class FourthlabComponent implements OnInit {
 
   private get HeightChartBounds(): number[] {
     const heights: number[] = [];
-    for(let i = 0; i < 15000; i += 500){
+    for(let i = 0; i < 10000; i += 500){
       heights.push(i);
     }
     return heights;
@@ -192,10 +192,10 @@ export class FourthlabComponent implements OnInit {
 
   private get DistanceChartPoints(): number[] {
     if(this.userStandartParameters){
-      return FourthLabCalculation.CalculateDistanceGraph(this.PerneabilityChartBounds, this.horizontAngle).map(pnt => pnt.y);
+      return FourthLabCalculation.CalculateDistanceGraph(this.HeightChartBounds, this.horizontAngle).map(pnt => pnt.x);
     }
-    return FourthLabCalculation.CalculateDistanceGraph(this.PerneabilityChartBounds, this.horizontAngle,
-       this.delta * Math.pow(10, -4), (-1 * this.gradient * Math.pow(10, -8))).map(pnt => pnt.y);
+    return FourthLabCalculation.CalculateDistanceGraph(this.HeightChartBounds, this.horizontAngle,
+       this.delta * Math.pow(10, -4), (-1 * this.gradient * Math.pow(10, -8))).map(pnt => pnt.x);
   }
 
   private get PerneabilityChartPoints(): number[]{

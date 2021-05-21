@@ -29,15 +29,17 @@ export class FourthLabCalculation {
                                                 };
                                                 return pointOnGraph;
                                             });
+                                            console.log(pointsCollection);
                                             return pointsCollection;
                                          }
     private static CalculateDistance(point: number, angle: number, delta: number = 5.78 * Math.pow(10, -4),
                                      gradient: number = -7.85 * Math.pow(10, -8)): number{
-                                                const s = (point)/
-                                                (Math.sqrt(1 - 
-                                                    ((this.CalculateRelativeDielectricPerneability(0, delta, gradient) / 
+                                                const angleRadians = (90 - angle) / (180 / Math.PI);
+                                                const s = (point) /
+                                                (Math.sqrt(1 -
+                                                    ((this.CalculateRelativeDielectricPerneability(0, delta, gradient) /
                                                     this.CalculateRelativeDielectricPerneability(point, delta, gradient))
-                                                 * Math.pow(Math.sin(90 - angle), 2))));
-                                                return s;
+                                                 * Math.pow(Math.sin(angleRadians), 2))));
+                                                return Math.round(s / 1000);
     }
 }
