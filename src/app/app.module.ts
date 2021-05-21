@@ -14,6 +14,7 @@ import { environment } from '../environments/environment';
 import { SecondLabComponent } from './labs/second/secondlab.component';
 import { ThirdlabComponent } from './labs/third/thirdlab.component';
 import { FourthlabComponent } from './labs/fourth/fourthlab.component';
+import { FifthlabComponent } from './labs/fifth/fifthlab.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FourthlabComponent } from './labs/fourth/fourthlab.component';
     FirstLabComponent,
     SecondLabComponent,
     ThirdlabComponent,
-    FourthlabComponent
+    FourthlabComponent,
+    FifthlabComponent
   ],
   imports: [
     BrowserModule,
