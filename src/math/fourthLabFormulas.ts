@@ -29,17 +29,20 @@ export class FourthLabCalculation {
                                                 };
                                                 return pointOnGraph;
                                             });
-                                            console.log(pointsCollection);
-                                            return pointsCollection;
+                                            const filteredPointsCollection = pointsCollection.filter(pnt => !Number.isNaN(pnt.x));
+                                            console.log(filteredPointsCollection);
+                                            return filteredPointsCollection;
                                          }
     private static CalculateDistance(point: number, angle: number, delta: number = 5.78 * Math.pow(10, -4),
                                      gradient: number = -7.85 * Math.pow(10, -8)): number{
                                                 const angleRadians = (90 - angle) / (180 / Math.PI);
+                                                const electricalRelation = this.CalculateRelativeDielectricPerneability(0, delta, gradient) / this.CalculateRelativeDielectricPerneability(point, delta, gradient);
+                                                const electricalRelationToAngle = ((electricalRelation)
+                                                * Math.pow(Math.sin(angleRadians), 2));
                                                 const s = (point) /
                                                 (Math.sqrt(1 -
-                                                    ((this.CalculateRelativeDielectricPerneability(0, delta, gradient) /
-                                                    this.CalculateRelativeDielectricPerneability(point, delta, gradient))
-                                                 * Math.pow(Math.sin(angleRadians), 2))));
+                                                    electricalRelationToAngle));
+                                                    console.log(s);
                                                 return Math.round(s / 1000);
     }
 }

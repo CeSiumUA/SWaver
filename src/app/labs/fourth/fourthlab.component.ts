@@ -3,6 +3,7 @@ import { /* ChartDataSets, */ ChartOptions, ChartType, Chart, registerables } fr
 import { ChartConfiguration } from 'chart.js';
 import { MetricPrefixes } from 'src/math/values';
 import { FourthLabCalculation } from '../../../math/fourthLabFormulas';
+import { GraphPoint } from '../../../models/GraphPoint';
 
 @Component({
   selector: 'app-fourthlab',
@@ -27,8 +28,9 @@ export class FourthlabComponent implements OnInit {
   public set userStandartParameters(value: boolean){
     this._userStandartParameters = value;
     this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
-    this.heightGraphConfig.data.labels = this.DistanceChartPoints;
-    this.heightGraphConfig.data.datasets[0].data = this.HeightChartBounds;
+    const distanceChartPoints = this.DistanceChartPoints;
+    this.heightGraphConfig.data.labels = distanceChartPoints.map(pnt => pnt.x);
+    this.heightGraphConfig.data.datasets[0].data = distanceChartPoints.map(pnt => pnt.y);
     this.secondChart?.update();
     this.firstChart?.update();
   }
@@ -40,8 +42,9 @@ export class FourthlabComponent implements OnInit {
   public set horizontAngle(value: number) {
     this._horizontAngle = value;
     this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
-    this.heightGraphConfig.data.labels = this.DistanceChartPoints;
-    this.heightGraphConfig.data.datasets[0].data = this.HeightChartBounds;
+    const distanceChartPoints = this.DistanceChartPoints;
+    this.heightGraphConfig.data.labels = distanceChartPoints.map(pnt => pnt.x);
+    this.heightGraphConfig.data.datasets[0].data = distanceChartPoints.map(pnt => pnt.y);
     this.secondChart?.update();
     this.firstChart?.update();
   }
@@ -53,8 +56,9 @@ export class FourthlabComponent implements OnInit {
   public set gradient(value: number) {
     this._graient = value;
     this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
-    this.heightGraphConfig.data.labels = this.DistanceChartPoints;
-    this.heightGraphConfig.data.datasets[0].data = this.HeightChartBounds;
+    const distanceChartPoints = this.DistanceChartPoints;
+    this.heightGraphConfig.data.labels = distanceChartPoints.map(pnt => pnt.x);
+    this.heightGraphConfig.data.datasets[0].data = distanceChartPoints.map(pnt => pnt.y);
     this.secondChart?.update();
     this.firstChart?.update();
   }
@@ -66,8 +70,9 @@ export class FourthlabComponent implements OnInit {
   public set delta(value: number) {
     this._delta = value;
     this.perneabilityGraphConfig.data.datasets[0].data = this.PerneabilityChartPoints;
-    this.heightGraphConfig.data.labels = this.DistanceChartPoints;
-    this.heightGraphConfig.data.datasets[0].data = this.HeightChartBounds;
+    const distanceChartPoints = this.DistanceChartPoints;
+    this.heightGraphConfig.data.labels = distanceChartPoints.map(pnt => pnt.x);
+    this.heightGraphConfig.data.datasets[0].data = distanceChartPoints.map(pnt => pnt.y);
     this.secondChart?.update();
     this.firstChart?.update();
   }
@@ -105,12 +110,12 @@ export class FourthlabComponent implements OnInit {
   private heightGraphConfig: ChartConfiguration = {
     type: 'line',
     data: {
-      labels: this.DistanceChartPoints,
+      labels: this.DistanceChartPoints.map(pnt => pnt.x),
       datasets: [{
         label: 'Залежність пройденої відстані від висоти',
         backgroundColor: 'rgb(255, 90, 132)',
         borderColor: 'rgb(255, 90, 132)',
-        data: this.HeightChartBounds
+        data: this.DistanceChartPoints.map(pnt => pnt.y)
       }]
     },
     options: {
@@ -184,18 +189,18 @@ export class FourthlabComponent implements OnInit {
 
   private get HeightChartBounds(): number[] {
     const heights: number[] = [];
-    for(let i = 0; i < 10000; i += 500){
+    for(let i = 0; i < 20000; i += 500){
       heights.push(i);
     }
     return heights;
   }
 
-  private get DistanceChartPoints(): number[] {
+  private get DistanceChartPoints(): GraphPoint[] {
     if(this.userStandartParameters){
-      return FourthLabCalculation.CalculateDistanceGraph(this.HeightChartBounds, this.horizontAngle).map(pnt => pnt.x);
+      return FourthLabCalculation.CalculateDistanceGraph(this.HeightChartBounds, this.horizontAngle);
     }
     return FourthLabCalculation.CalculateDistanceGraph(this.HeightChartBounds, this.horizontAngle,
-       this.delta * Math.pow(10, -4), (-1 * this.gradient * Math.pow(10, -8))).map(pnt => pnt.x);
+       this.delta * Math.pow(10, -4), (-1 * this.gradient * Math.pow(10, -8)));
   }
 
   private get PerneabilityChartPoints(): number[]{
