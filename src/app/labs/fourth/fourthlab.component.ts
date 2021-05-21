@@ -189,7 +189,7 @@ export class FourthlabComponent implements OnInit {
 
   private get HeightChartBounds(): number[] {
     const heights: number[] = [];
-    for(let i = 0; i < 20000; i += 500){
+    for(let i = 0; i < 50000; i += 500){
       heights.push(i);
     }
     return heights;

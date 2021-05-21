@@ -64,5 +64,5 @@ export class Utilities{
         [MetricPrefixes.z, Math.pow(10, -21)],
         [MetricPrefixes.y, Math.pow(10, -24)],
         [MetricPrefixes.Percents, Math.pow(10, -2)]
-    ]); 
+    ]);
 }

@@ -195,7 +195,7 @@ var FourthlabComponent = /** @class */ (function () {
     Object.defineProperty(FourthlabComponent.prototype, "HeightChartBounds", {
         get: function () {
             var heights = [];
-            for (var i = 0; i < 20000; i += 500) {
+            for (var i = 0; i < 50000; i += 500) {
                 heights.push(i);
             }
             return heights;

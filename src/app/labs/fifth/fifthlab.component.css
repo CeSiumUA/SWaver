@@ -1,0 +1,23 @@
+.mainFormLeft {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.resultForm {
+    margin-left: 3%;
+    margin-top: 3%;
+    margin-bottom: 10px;
+    float: left;
+}
+
+.fullWidthField {
+    width: 100%;
+}
+
+.graphElement {
+    display: block;
+    width: 50%;
+    float: right;
+    margin-right: 25px;
+}
