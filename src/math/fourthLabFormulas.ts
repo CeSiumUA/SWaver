@@ -30,7 +30,6 @@ export class FourthLabCalculation {
                                                 return pointOnGraph;
                                             });
                                             const filteredPointsCollection = pointsCollection.filter(pnt => !Number.isNaN(pnt.x));
-                                            console.log(filteredPointsCollection);
                                             return filteredPointsCollection;
                                          }
     private static CalculateDistance(point: number, angle: number, delta: number = 5.78 * Math.pow(10, -4),
@@ -42,7 +41,6 @@ export class FourthLabCalculation {
                                                 const s = (point) /
                                                 (Math.sqrt(1 -
                                                     electricalRelationToAngle));
-                                                    console.log(s);
                                                 return Math.round(s / 1000);
     }
 }

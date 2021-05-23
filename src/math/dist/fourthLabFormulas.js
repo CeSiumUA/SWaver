@@ -35,7 +35,6 @@ var FourthLabCalculation = /** @class */ (function () {
             return pointOnGraph;
         });
         var filteredPointsCollection = pointsCollection.filter(function (pnt) { return !Number.isNaN(pnt.x); });
-        console.log(filteredPointsCollection);
         return filteredPointsCollection;
     };
     FourthLabCalculation.CalculateDistance = function (point, angle, delta, gradient) {
@@ -48,7 +47,6 @@ var FourthLabCalculation = /** @class */ (function () {
         var s = (point) /
             (Math.sqrt(1 -
                 electricalRelationToAngle));
-        console.log(s);
         return Math.round(s / 1000);
     };
     return FourthLabCalculation;
