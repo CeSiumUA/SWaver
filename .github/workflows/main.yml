@@ -28,5 +28,9 @@ jobs:
       - name: Push Build to Releases
         uses: ncipollo/release-action@v1
         with:
+          repoToken: ${{ secrets.SWaver_workflow_token }}
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SWAVER_LAB }}'
+          channelId: live
+          projectId: swaver-lab
           artifacts: "dist/angular-githubaction/*"
           token: ${{ secrets.SWaver_workflow_token }}
