@@ -14,9 +14,9 @@ var fifthLabFormulas_1 = require("../../../math/fifthLabFormulas");
 var Layer_1 = require("../../../models/Layer");
 var FifthlabComponent = /** @class */ (function () {
     function FifthlabComponent() {
-        this.frequency = 9.2;
-        this.frequencyMap = 'M';
-        this.angle = 30;
+        this._frequency = 9.2;
+        this._frequencyMap = 'M';
+        this._angle = 30;
         this._selectedLayer = 'F';
         this._selectedDayTime = 'Day';
         this.traectoryGraphConfig = {
@@ -24,7 +24,7 @@ var FifthlabComponent = /** @class */ (function () {
             data: {
                 labels: this.TraceChartPoints.map(function (pnt) { return pnt.x; }),
                 datasets: [{
-                        label: 'Залежність діелектричної проникності від висоти',
+                        label: 'Залежність висоти від пройденої відстані',
                         backgroundColor: 'rgb(255, 90, 132)',
                         borderColor: 'rgb(255, 90, 132)',
                         data: this.TraceChartPoints.map(function (pnt) { return pnt.y; })
@@ -41,7 +41,7 @@ var FifthlabComponent = /** @class */ (function () {
                         enabled: true,
                         callbacks: {
                             label: function (a) {
-                                return "\u0414\u0456\u0435\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u043D\u0430 \u043F\u0440\u043E\u043D\u0438\u043A\u043D\u0456\u0441\u0442\u044C: " + a.raw;
+                                return "\u0412\u0438\u0441\u043E\u0442\u0430: " + a.raw;
                             }
                         }
                     }
@@ -53,7 +53,7 @@ var FifthlabComponent = /** @class */ (function () {
             data: {
                 labels: this.DensityChartPoints.map(function (pnt) { return pnt.x; }),
                 datasets: [{
-                        label: 'Залежність пройденої відстані від висоти',
+                        label: 'Залежність електронної щільності від висоти',
                         backgroundColor: 'rgb(255, 90, 132)',
                         borderColor: 'rgb(255, 90, 132)',
                         data: this.DensityChartPoints.map(function (pnt) { return pnt.y; })
@@ -70,7 +70,7 @@ var FifthlabComponent = /** @class */ (function () {
                         enabled: true,
                         callbacks: {
                             label: function (a) {
-                                return "\u0412\u0438\u0441\u043E\u0442\u0430: " + a.raw;
+                                return "\u0415\u043B\u0435\u043A\u0442\u0440\u043E\u043D\u043D\u0430 \u0449\u0456\u043B\u044C\u043D\u0456\u0441\u0442\u044C: " + a.raw;
                             }
                         }
                     }
@@ -115,6 +115,39 @@ var FifthlabComponent = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(FifthlabComponent.prototype, "frequency", {
+        get: function () {
+            return this._frequency;
+        },
+        set: function (value) {
+            this._frequency = value;
+            this.UpdateCharts();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FifthlabComponent.prototype, "frequencyMap", {
+        get: function () {
+            return this._frequencyMap;
+        },
+        set: function (value) {
+            this._frequencyMap = value;
+            this.UpdateCharts();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FifthlabComponent.prototype, "angle", {
+        get: function () {
+            return this._angle;
+        },
+        set: function (value) {
+            this._angle = value;
+            this.UpdateCharts();
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(FifthlabComponent.prototype, "DensityChartPoints", {
         get: function () {
             var layer = this.GetLayer();
@@ -126,7 +159,11 @@ var FifthlabComponent = /** @class */ (function () {
     });
     Object.defineProperty(FifthlabComponent.prototype, "TraceChartPoints", {
         get: function () {
-            return [];
+            var layer = this.GetLayer();
+            var points = this.GetHeightPoints(layer);
+            var frequencyCoefficient = values_1.Utilities.valuesMap.get(this.valuesMap.indexOf(this.frequencyMap));
+            var realFrequency = this.frequency * (frequencyCoefficient ? frequencyCoefficient : 1);
+            return fifthLabFormulas_1.FifthLabCalculation.CalculateTraceDistance(points, layer, this.angle, realFrequency);
         },
         enumerable: false,
         configurable: true
@@ -141,11 +178,15 @@ var FifthlabComponent = /** @class */ (function () {
         return points;
     };
     FifthlabComponent.prototype.UpdateCharts = function () {
-        var _a;
+        var _a, _b;
+        var trajectoryChartPoints = this.TraceChartPoints;
+        this.traectoryGraphConfig.data.labels = trajectoryChartPoints.map(function (pnt) { return pnt.x; });
+        this.traectoryGraphConfig.data.datasets[0].data = trajectoryChartPoints.map(function (pnt) { return pnt.y; });
+        (_a = this.firstChart) === null || _a === void 0 ? void 0 : _a.update();
         var densityChartPoints = this.DensityChartPoints;
         this.densityGraphConfig.data.labels = densityChartPoints.map(function (pnt) { return pnt.x; });
         this.densityGraphConfig.data.datasets[0].data = densityChartPoints.map(function (pnt) { return pnt.y; });
-        (_a = this === null || this === void 0 ? void 0 : this.secondChart) === null || _a === void 0 ? void 0 : _a.update();
+        (_b = this === null || this === void 0 ? void 0 : this.secondChart) === null || _b === void 0 ? void 0 : _b.update();
     };
     FifthlabComponent.prototype.GetLayer = function () {
         var layerLevel = Layer_1.IonosphereLayer[this.selectedLayer];

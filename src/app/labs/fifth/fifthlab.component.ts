@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { /* ChartDataSets, */ ChartOptions, ChartType, Chart, registerables } from 'chart.js';
 import { ChartConfiguration } from 'chart.js';
-import { MetricPrefixes } from 'src/math/values';
+import { MetricPrefixes, Utilities } from 'src/math/values';
 import { GraphPoint } from '../../../models/GraphPoint';
 import { FifthLabCalculation } from '../../../math/fifthLabFormulas';
 import { DayTime, IonosphereLayer, Layer, LayerParameter } from '../../../models/Layer';
@@ -13,10 +13,10 @@ import { DayTime, IonosphereLayer, Layer, LayerParameter } from '../../../models
 })
 export class FifthlabComponent implements OnInit {
 
-  public frequency = 9.2;
-  public frequencyMap = 'M';
+  private _frequency = 9.2;
+  private _frequencyMap = 'M';
 
-  public angle = 30;
+  private _angle = 30;
 
   private _selectedLayer = 'F';
   private _selectedDayTime = 'Day';
@@ -31,7 +31,7 @@ export class FifthlabComponent implements OnInit {
     data: {
       labels: this.TraceChartPoints.map(pnt => pnt.x),
       datasets: [{
-        label: 'Залежність діелектричної проникності від висоти',
+        label: 'Залежність висоти від пройденої відстані',
         backgroundColor: 'rgb(255, 90, 132)',
         borderColor: 'rgb(255, 90, 132)',
         data: this.TraceChartPoints.map(pnt => pnt.y)
@@ -48,7 +48,7 @@ export class FifthlabComponent implements OnInit {
           enabled: true,
           callbacks: {
             label: (a) => {
-              return `Діелектрична проникність: ${a.raw}`;
+              return `Висота: ${a.raw}`;
             }
           }
         }
@@ -61,7 +61,7 @@ export class FifthlabComponent implements OnInit {
     data: {
       labels: this.DensityChartPoints.map(pnt => pnt.x),
       datasets: [{
-        label: 'Залежність пройденої відстані від висоти',
+        label: 'Залежність електронної щільності від висоти',
         backgroundColor: 'rgb(255, 90, 132)',
         borderColor: 'rgb(255, 90, 132)',
         data: this.DensityChartPoints.map(pnt => pnt.y)
@@ -78,7 +78,7 @@ export class FifthlabComponent implements OnInit {
           enabled: true,
           callbacks: {
             label: (a) => {
-              return `Висота: ${a.raw}`;
+              return `Електронна щільність: ${a.raw}`;
             }
           }
         }
@@ -125,6 +125,33 @@ export class FifthlabComponent implements OnInit {
     this.UpdateCharts();
   }
 
+  public get frequency(): number{
+    return this._frequency;
+  }
+
+  public set frequency(value: number){
+    this._frequency = value;
+    this.UpdateCharts();
+  }
+
+  public get frequencyMap(): string{
+    return this._frequencyMap;
+  }
+
+  public set frequencyMap(value: string){
+    this._frequencyMap = value;
+    this.UpdateCharts();
+  }
+
+  public get angle(): number{
+    return this._angle;
+  }
+
+  public set angle(value: number){
+    this._angle = value;
+    this.UpdateCharts();
+  }
+
   public get DensityChartPoints(): GraphPoint[] {
     const layer = this.GetLayer();
     const points = this.GetHeightPoints(layer);
@@ -132,7 +159,11 @@ export class FifthlabComponent implements OnInit {
   }
 
   public get TraceChartPoints(): GraphPoint[] {
-    return [];
+    const layer = this.GetLayer();
+    const points = this.GetHeightPoints(layer);
+    const frequencyCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.frequencyMap));
+    const realFrequency = this.frequency * (frequencyCoefficient ? frequencyCoefficient : 1);
+    return FifthLabCalculation.CalculateTraceDistance(points, layer, this.angle, realFrequency);
   }
 
   private GetHeightPoints(layer: Layer): number[]{
@@ -146,6 +177,10 @@ export class FifthlabComponent implements OnInit {
   }
 
   private UpdateCharts(): void{
+    const trajectoryChartPoints = this.TraceChartPoints;
+    this.traectoryGraphConfig.data.labels = trajectoryChartPoints.map(pnt => pnt.x);
+    this.traectoryGraphConfig.data.datasets[0].data = trajectoryChartPoints.map(pnt => pnt.y);
+    this.firstChart?.update();
     const densityChartPoints = this.DensityChartPoints;
     this.densityGraphConfig.data.labels = densityChartPoints.map(pnt => pnt.x);
     this.densityGraphConfig.data.datasets[0].data = densityChartPoints.map(pnt => pnt.y);
