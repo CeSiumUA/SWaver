@@ -1,10 +1,27 @@
 
-import { IonosphereLayer, DayTime } from '../app/labs/fifth/fifthlab.component';
 export interface Layer{
     h: number;
     zm: number;
     Ner: number;
 }
+
+export enum Season{
+    Winter = 0,
+    Spring = 1,
+    Summer = 2,
+    Autumn = 3
+  }
+export enum IonosphereLayer{
+    D,
+    E,
+    F,
+    F1,
+    F2
+  }
+export enum DayTime{
+    Day = 0,
+    Night = 1
+  }
 
 export const LayerParameter = new Map<IonosphereLayer, Map<DayTime, Layer>>([
     [IonosphereLayer.D, new Map<DayTime, Layer>([[DayTime.Day, {h: 50, zm: 40, Ner: 1000} as Layer],
