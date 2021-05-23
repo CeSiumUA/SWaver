@@ -18,8 +18,8 @@ export class FifthlabComponent implements OnInit {
 
   public angle = 30;
 
-  public selectedLayer = 'F';
-  public selectedDayTime = 'Day';
+  private _selectedLayer = 'F';
+  private _selectedDayTime = 'Day';
 
   constructor() { }
 
@@ -107,6 +107,24 @@ export class FifthlabComponent implements OnInit {
     }
   }
 
+  public get selectedLayer(): string{
+    return this._selectedLayer;
+  }
+
+  public set selectedLayer(value: string){
+    this._selectedLayer = value;
+    this.UpdateCharts();
+  }
+
+  public get selectedDayTime(): string{
+    return this._selectedDayTime;
+  }
+
+  public set selectedDayTime(value: string){
+    this._selectedDayTime = value;
+    this.UpdateCharts();
+  }
+
   public get DensityChartPoints(): GraphPoint[] {
     const layer = this.GetLayer();
     const points = this.GetHeightPoints(layer);
@@ -125,6 +143,13 @@ export class FifthlabComponent implements OnInit {
       points.push(i);
     }
     return points;
+  }
+
+  private UpdateCharts(): void{
+    const densityChartPoints = this.DensityChartPoints;
+    this.densityGraphConfig.data.labels = densityChartPoints.map(pnt => pnt.x);
+    this.densityGraphConfig.data.datasets[0].data = densityChartPoints.map(pnt => pnt.y);
+    this?.secondChart?.update();
   }
 
   private GetLayer(): Layer{

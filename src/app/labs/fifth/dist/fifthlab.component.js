@@ -17,8 +17,8 @@ var FifthlabComponent = /** @class */ (function () {
         this.frequency = 9.2;
         this.frequencyMap = 'M';
         this.angle = 30;
-        this.selectedLayer = 'F';
-        this.selectedDayTime = 'Day';
+        this._selectedLayer = 'F';
+        this._selectedDayTime = 'Day';
         this.traectoryGraphConfig = {
             type: 'line',
             data: {
@@ -93,6 +93,28 @@ var FifthlabComponent = /** @class */ (function () {
             this.secondChart = new chart_js_1.Chart(context2, this.densityGraphConfig);
         }
     };
+    Object.defineProperty(FifthlabComponent.prototype, "selectedLayer", {
+        get: function () {
+            return this._selectedLayer;
+        },
+        set: function (value) {
+            this._selectedLayer = value;
+            this.UpdateCharts();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FifthlabComponent.prototype, "selectedDayTime", {
+        get: function () {
+            return this._selectedDayTime;
+        },
+        set: function (value) {
+            this._selectedDayTime = value;
+            this.UpdateCharts();
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(FifthlabComponent.prototype, "DensityChartPoints", {
         get: function () {
             var layer = this.GetLayer();
@@ -117,6 +139,13 @@ var FifthlabComponent = /** @class */ (function () {
             points.push(i);
         }
         return points;
+    };
+    FifthlabComponent.prototype.UpdateCharts = function () {
+        var _a;
+        var densityChartPoints = this.DensityChartPoints;
+        this.densityGraphConfig.data.labels = densityChartPoints.map(function (pnt) { return pnt.x; });
+        this.densityGraphConfig.data.datasets[0].data = densityChartPoints.map(function (pnt) { return pnt.y; });
+        (_a = this === null || this === void 0 ? void 0 : this.secondChart) === null || _a === void 0 ? void 0 : _a.update();
     };
     FifthlabComponent.prototype.GetLayer = function () {
         var layerLevel = Layer_1.IonosphereLayer[this.selectedLayer];
