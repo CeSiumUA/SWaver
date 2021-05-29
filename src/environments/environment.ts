@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  tab: 4,
+  tab: 0,
   production: false
 };
 
