@@ -47,7 +47,7 @@ export class FifthlabComponent implements OnInit {
         tooltip: {
           enabled: true,
           callbacks: {
-            label: (a) => {
+            label: (a: { raw: any; }) => {
               return `Висота: ${a.raw}`;
             }
           }

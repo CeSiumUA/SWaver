@@ -18,3 +18,10 @@
 .fieldsTable {
     /* margin-top: 15px; */
 }
+
+.graphElement {
+    display: block;
+    width: 50%;
+    float: right;
+    margin-right: 25px;
+}
