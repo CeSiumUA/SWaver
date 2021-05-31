@@ -25,11 +25,6 @@ jobs:
         run: |
           npm install
           npm run build
-      - name: Push Build to Releases
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "dist/swaver/*"
-          token: ${{ secrets.SWaver_workflow_token }}
       - name: Push to FB
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
