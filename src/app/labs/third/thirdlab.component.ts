@@ -135,6 +135,10 @@ export class ThirdlabComponent implements OnInit {
 
   public earthType: DielectricType[] = [{id: 0, type: 'Діелектрик'}, {id: 1, type: 'Провідник'}];
 
+  public get standartParameterToggleLabel(): string {
+    return this.normalPolarization ? 'Нормальна' : 'Паралельна';
+  }
+
   private decreasingMultiplexerGraphConfig: ChartConfiguration = {
     type: 'line',
     data: {
@@ -164,6 +168,35 @@ export class ThirdlabComponent implements OnInit {
       }
     }
   };
+  private reflectionCoefficientGraphConfig: ChartConfiguration = {
+    type: 'line',
+    data: {
+      labels: this.ReflectionCoefficientGraphPoints.map(pnt => pnt.x),
+      datasets: [{
+        label: 'Залежність коефіціента відбиття від кута падіння',
+        backgroundColor: 'rgb(255, 90, 132)',
+        borderColor: 'rgb(255, 90, 132)',
+        data: this.ReflectionCoefficientGraphPoints.map(pnt => pnt.y)
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+            beginAtZero: false,
+        },
+      },
+      plugins: {
+        tooltip: {
+          enabled: true,
+          callbacks: {
+            label: (a) => {
+              return `Коефіціент відбиття: ${a.raw}`;
+            }
+          }
+        }
+      }
+    }
+  };
 
   public get AttenuationFactorGraphPoints(): GraphPoint[]{
     const distanceCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.traceLengthMap));
@@ -184,11 +217,30 @@ export class ThirdlabComponent implements OnInit {
     });
   }
 
+  public get ReflectionCoefficientGraphPoints(): GraphPoint[] {
+    const points: number[] = [];
+    for(let x = 0; x <= 360; x += 5){
+      points.push(x);
+    }
+    return points.map(pnt => {
+      const angle = pnt * Math.PI / 180;
+      return {
+        x: pnt,
+        y: this.earthSelected === 1 ? 1 : (this.normalPolarization ? (Math.abs((Math.sin(angle) - Math.sqrt(25 - Math.pow(Math.cos(angle), 2))) / (Math.sin(angle) + Math.sqrt(25 - Math.pow(Math.cos(angle), 2))))) : 
+        (Math.abs((25 * Math.sin(angle) - Math.sqrt(25 - Math.pow(Math.cos(angle), 2))) / (25 * Math.sin(angle) + Math.sqrt(25 - Math.pow(Math.cos(angle), 2))))))
+      }
+    });
+  }
+
   private UpdateCharts(): void{
     const trajectoryChartPoints = this.AttenuationFactorGraphPoints;
     this.decreasingMultiplexerGraphConfig.data.labels = trajectoryChartPoints.map(pnt => pnt.x);
     this.decreasingMultiplexerGraphConfig.data.datasets[0].data = trajectoryChartPoints.map(pnt => pnt.y);
     this.firstChart?.update();
+    const reflectionChartPoints = this.ReflectionCoefficientGraphPoints;
+    this.reflectionCoefficientGraphConfig.data.labels = reflectionChartPoints.map(pnt => pnt.x);
+    this.reflectionCoefficientGraphConfig.data.datasets[0].data = reflectionChartPoints.map(pnt => pnt.y);
+    this.secondChart?.update();
   }
 
   private get points(): number[]{
@@ -219,10 +271,10 @@ export class ThirdlabComponent implements OnInit {
         );
     }
     if (context2) {
-        /* this.secondChart = new Chart(
+        this.secondChart = new Chart(
             context2,
-            this.powerGraphConfig
-        ); */
+            this.reflectionCoefficientGraphConfig
+        );
     }
   }
 
