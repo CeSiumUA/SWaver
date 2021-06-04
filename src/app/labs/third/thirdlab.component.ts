@@ -44,6 +44,7 @@ export class ThirdlabComponent implements OnInit {
   public _normalPolarization = true;
   private firstChart?: Chart;
   private secondChart?: Chart;
+  private thirdChart?: Chart;
 
   public get waveLength(): number{
     return this._waveLength;
@@ -206,10 +207,10 @@ export class ThirdlabComponent implements OnInit {
     const realWaveLength = this.waveLength * (waveLengthCoefficient ? waveLengthCoefficient : 1);
 
     const transmitterCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.transmitterHeightMap));
-    const realTransmitterHeight = this.traceLength * (transmitterCoefficient ? transmitterCoefficient : 1);
+    const realTransmitterHeight = this.transmitterHeight * (transmitterCoefficient ? transmitterCoefficient : 1);
 
     const receiverCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.receiverHeightMap));
-    const realReceiverHeight = this.traceLength * (receiverCoefficient ? receiverCoefficient : 1);
+    const realReceiverHeight = this.receiverHeight * (receiverCoefficient ? receiverCoefficient : 1);
 
     return this.points.map(pnt => {
       const deltaR = 2 * realTransmitterHeight * Math.cos(Math.atan(pnt / (realTransmitterHeight + realReceiverHeight)));
@@ -247,7 +248,7 @@ export class ThirdlabComponent implements OnInit {
     const distanceCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.traceLengthMap));
     const realDistance = this.traceLength * (distanceCoefficient ? distanceCoefficient : 1);
     const numbers: number[] = [];
-    for(let i = 0; i < realDistance + 50; i+= 50){
+    for(let i = 0; i < realDistance + 50; i+= 10){
       numbers.push(i);
     }
     return numbers;
@@ -260,9 +261,11 @@ export class ThirdlabComponent implements OnInit {
   ngOnInit(): void {
     let context1 = (document.getElementById('thirdCanvas1') as HTMLCanvasElement)?.getContext('2d');
     let context2 = (document.getElementById('thirdCanvas2') as HTMLCanvasElement)?.getContext('2d');
-    while (context1 === null || context2 === null){
+    let context3 = (document.getElementById('thirdCanvas3') as HTMLCanvasElement)?.getContext('2d');
+    while (context1 === null || context2 === null || context3 === null){
         context1 = (document.getElementById('thirdCanvas1') as HTMLCanvasElement)?.getContext('2d');
         context2 = (document.getElementById('thirdCanvas2') as HTMLCanvasElement)?.getContext('2d');
+        context3 = (document.getElementById('thirdCanvas3') as HTMLCanvasElement)?.getContext('2d');
     }
     if (context1) {
         this.firstChart = new Chart(
@@ -275,6 +278,9 @@ export class ThirdlabComponent implements OnInit {
             context2,
             this.reflectionCoefficientGraphConfig
         );
+    }
+    if (context3) {
+
     }
   }
 
