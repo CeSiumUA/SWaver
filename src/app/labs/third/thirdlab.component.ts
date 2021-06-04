@@ -25,25 +25,113 @@ export class ThirdlabComponent implements OnInit {
 
   public electricalPerneability = 25; */
 
-  public waveLength: number = 20;
-  public waveLengthMap = 'One';
+  public _waveLength: number = 20;
+  public _waveLengthMap = 'One';
 
-  public transmitterHeight: number = 150;
-  public transmitterHeightMap = 'One';
+  public _transmitterHeight: number = 150;
+  public _transmitterHeightMap = 'One';
 
-  public receiverHeight: number = 150;
-  public receiverHeightMap = 'One';
+  public _receiverHeight: number = 150;
+  public _receiverHeightMap = 'One';
 
-  public earthSelected: number = 0;
+  public _earthSelected: number = 0;
 
-  public directionalPatternWidth = 90;
+  public _directionalPatternWidth = 90;
 
-  public traceLength: number = 1;
-  public traceLengthMap = 'k';
+  public _traceLength: number = 1;
+  public _traceLengthMap = 'k';
 
-  public normalPolarization = true;
+  public _normalPolarization = true;
   private firstChart?: Chart;
   private secondChart?: Chart;
+
+  public get waveLength(): number{
+    return this._waveLength;
+  }
+  public set waveLength(value: number){
+    this._waveLength = value;
+    this.UpdateCharts();
+  }
+
+  public get waveLengthMap(): string{
+    return this._waveLengthMap;
+  }
+  public set waveLengthMap(value: string){
+    this._waveLengthMap = value;
+    this.UpdateCharts();
+  }
+
+  public get transmitterHeight(): number{
+    return this._transmitterHeight;
+  }
+  public set transmitterHeight(value: number){
+    this._transmitterHeight = value;
+    this.UpdateCharts();
+  }
+
+  public get transmitterHeightMap(): string{
+    return this._transmitterHeightMap;
+  }
+  public set transmitterHeightMap(value: string){
+    this._transmitterHeightMap = value;
+    this.UpdateCharts();
+  }
+
+  public get receiverHeight(): number{
+    return this._receiverHeight;
+  }
+  public set receiverHeight(value: number){
+    this._receiverHeight = value;
+    this.UpdateCharts();
+  }
+
+  public get receiverHeightMap(): string{
+    return this._receiverHeightMap;
+  }
+  public set receiverHeightMap(value: string){
+    this._receiverHeightMap = value;
+    this.UpdateCharts();
+  }
+
+  public get earthSelected(): number{
+    return this._earthSelected;
+  }
+  public set earthSelected(value: number){
+    this._earthSelected = value;
+    this.UpdateCharts();
+  }
+
+  public get directionalPatternWidth(): number{
+    return this._directionalPatternWidth;
+  }
+  public set directionalPatternWidth(value: number){
+    this._directionalPatternWidth = value;
+    this.UpdateCharts();
+  }
+
+  public get traceLength(): number{
+    return this._traceLength;
+  }
+  public set traceLength(value: number){
+    this._traceLength = value;
+    this.UpdateCharts();
+  }
+
+  public get traceLengthMap(): string{
+    return this._traceLengthMap;
+  }
+  public set traceLengthMap(value: string){
+    this._traceLengthMap = value;
+    this.UpdateCharts();
+  }
+
+  public get normalPolarization(): boolean{
+    return this._normalPolarization;
+  }
+  public set normalPolarization(value: boolean){
+    this._normalPolarization = value;
+    this.UpdateCharts();
+  }
 
   public earthType: DielectricType[] = [{id: 0, type: 'Діелектрик'}, {id: 1, type: 'Провідник'}];
 
@@ -94,6 +182,13 @@ export class ThirdlabComponent implements OnInit {
       const deltaR = 2 * realTransmitterHeight * Math.cos(Math.atan(pnt / (realTransmitterHeight + realReceiverHeight)));
       return ThirdLabCalculation.CalculateAttenuationFactor(pnt, 1, this.normalPolarization ? 0 : Math.PI / 2, realWaveLength, deltaR);
     });
+  }
+
+  private UpdateCharts(): void{
+    const trajectoryChartPoints = this.AttenuationFactorGraphPoints;
+    this.decreasingMultiplexerGraphConfig.data.labels = trajectoryChartPoints.map(pnt => pnt.x);
+    this.decreasingMultiplexerGraphConfig.data.datasets[0].data = trajectoryChartPoints.map(pnt => pnt.y);
+    this.firstChart?.update();
   }
 
   private get points(): number[]{
