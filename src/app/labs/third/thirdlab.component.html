@@ -3,7 +3,7 @@
         <mat-card-title>ДОСЛІДЖЕННЯ ПОШИРЕННЯ РАДІОХВИЛЬ ПОБЛИЗУ ПОВЕРХНІ ЗЕМЛІ</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <table class="fullWidthField fieldsTable" cellspacing="0">
+        <!-- <table class="fullWidthField fieldsTable" cellspacing="0">
             <tr>
                 <td colspan="1">
                     <mat-form-field class="fullWidthField">
@@ -42,6 +42,20 @@
                         [(ngModel)]="electricalPerneability"
                         max="360"
                         aria-label="units"></mat-slider>
+                </td>
+            </tr>
+        </table> -->
+        <table class="fullWidthField fieldsTable" cellspacing="0">
+            <tr>
+                <td colspan="2">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Вид підстилаючої поверхні</mat-label>
+                        <mat-select [(value)]="earthSelected">
+                          <mat-option *ngFor="let cond of earthType" [value]="cond.id">
+                            {{cond.type}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
                 </td>
             </tr>
         </table>
@@ -200,3 +214,10 @@
         </table>
     </mat-card-content>
 </mat-card>
+
+<div class="graphElement">
+    <canvas baseChart id="thirdCanvas1"></canvas>
+</div>
+<div class="graphElement">
+    <canvas baseChart id="thirdCanvas2"></canvas>
+</div>
