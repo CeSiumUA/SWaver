@@ -25,10 +25,10 @@ jobs:
         run: |
           npm install
           npm run build
-      - name: Push to FB
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.SWaver_workflow_token }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SWAVER_LAB }}'
-          channelId: live
-          projectId: swaver-lab
+      #- name: Push to FB
+        #uses: FirebaseExtended/action-hosting-deploy@v0
+        #with:
+          #repoToken: '${{ secrets.SWaver_workflow_token }}'
+          #firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SWAVER_LAB }}'
+          #channelId: live
+          #projectId: swaver-lab
