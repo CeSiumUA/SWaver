@@ -15,5 +15,10 @@
 <body class="mat-typography">
   <app-root></app-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
+  <script>
+    if (global === undefined) {
+      var global = window;
+    }
+  </script>
 </body>
 </html>

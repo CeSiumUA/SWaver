@@ -4,6 +4,7 @@ import { /* ChartDataSets, */ ChartOptions, ChartType, Chart, registerables } fr
 import { ChartConfiguration } from 'chart.js';
 import { GraphPoint } from '../../../models/GraphPoint';
 import { ThirdLabCalculation } from '../../../math/thirdLabFormulas';
+import functionPlot from 'function-plot';
 
 @Component({
   selector: 'app-thirdlab',
@@ -242,6 +243,7 @@ export class ThirdlabComponent implements OnInit {
     this.reflectionCoefficientGraphConfig.data.labels = reflectionChartPoints.map(pnt => pnt.x);
     this.reflectionCoefficientGraphConfig.data.datasets[0].data = reflectionChartPoints.map(pnt => pnt.y);
     this.secondChart?.update();
+    this.drawEllipse();
   }
 
   private get points(): number[]{
@@ -256,6 +258,57 @@ export class ThirdlabComponent implements OnInit {
 
   public showValue(val: number | string): string{
     return val.toString();
+  }
+
+  public drawEllipse(): void{
+    const l = this.L;
+    const lm = l.Lm;
+    const lb = l.Lb;
+    functionPlot({
+      target: '#thirdGraph',
+      width: 800,
+      grid: true,
+      height: 400,
+      xAxis: {
+        label: 'Lm',
+        domain: [-1 * Math.sqrt(lb), Math.sqrt(lb)]
+      },
+      yAxis: {
+        label: 'Lb',
+        domain: [-1 * Math.sqrt(lm), Math.sqrt(lm)]
+      },
+      data: [
+        {
+          fn: `sqrt((-(x^2)/${lb} + 1)*${lm})`,
+        },
+        {
+          fn: `-sqrt((-(x^2)/${lb} + 1)*${lm})`,
+        },
+      ]
+    });
+  }
+
+  private get L(){
+    const transmitterCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.transmitterHeightMap));
+    const realTransmitterHeight = this.transmitterHeight * (transmitterCoefficient ? transmitterCoefficient : 1);
+
+    const receiverCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.receiverHeightMap));
+    const realReceiverHeight = this.receiverHeight * (receiverCoefficient ? receiverCoefficient : 1);
+
+    const distanceCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.traceLengthMap));
+    const realDistance = this.traceLength * (distanceCoefficient ? distanceCoefficient : 1);
+
+    const waveLengthCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.waveLengthMap));
+    const realWaveLength = this.waveLength * (waveLengthCoefficient ? waveLengthCoefficient : 1);
+
+    const r1 = realTransmitterHeight / (Math.sin(Math.atan((realReceiverHeight + realTransmitterHeight) / realDistance)));
+    const r2 = realReceiverHeight / (Math.sin(Math.atan((realReceiverHeight + realTransmitterHeight) / realDistance)));
+
+    const lm = 2 * Math.sqrt(realWaveLength * r1 * r2 / realDistance);
+
+    const lb = lm * realDistance / Math.sqrt(Math.pow(lm, 2) + Math.pow(realDistance, 2) * ((realReceiverHeight + realTransmitterHeight) / realDistance));
+
+    return {Lm: lm, Lb: lb};
   }
 
   ngOnInit(): void {
@@ -282,8 +335,8 @@ export class ThirdlabComponent implements OnInit {
     if (context3) {
 
     }
+    this.drawEllipse();
   }
-
 }
 
 export interface DielectricType{
