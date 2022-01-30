@@ -18,7 +18,7 @@ export class FifthlabComponent implements OnInit {
 
   private _angle = 30;
 
-  private _selectedLayer = 'F';
+  private _selectedLayer = 'E';
   private _selectedDayTime = 'Day';
 
   constructor() { }

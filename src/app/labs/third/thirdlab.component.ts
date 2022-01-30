@@ -271,11 +271,11 @@ export class ThirdlabComponent implements OnInit {
       height: 400,
       xAxis: {
         label: 'Lm',
-        domain: [-1 * Math.sqrt(lb), Math.sqrt(lb)]
+        domain: [-1 * (Math.sqrt(lb) + 1), (Math.sqrt(lb) + 1)]
       },
       yAxis: {
         label: 'Lb',
-        domain: [-1 * Math.sqrt(lm), Math.sqrt(lm)]
+        domain: [-1 * (Math.sqrt(lm) + 1), (Math.sqrt(lm) + 1)]
       },
       data: [
         {
@@ -303,11 +303,10 @@ export class ThirdlabComponent implements OnInit {
 
     const r1 = realTransmitterHeight / (Math.sin(Math.atan((realReceiverHeight + realTransmitterHeight) / realDistance)));
     const r2 = realReceiverHeight / (Math.sin(Math.atan((realReceiverHeight + realTransmitterHeight) / realDistance)));
-
+    
     const lm = 2 * Math.sqrt(realWaveLength * r1 * r2 / realDistance);
 
     const lb = lm * realDistance / Math.sqrt(Math.pow(lm, 2) + Math.pow(realDistance, 2) * ((realReceiverHeight + realTransmitterHeight) / realDistance));
-
     return {Lm: lm, Lb: lb};
   }
 
