@@ -342,37 +342,37 @@
         </table>
     </mat-card-content>
 </mat-card>
-<mat-card class="resultForm">
+<mat-card class="resultForm" style="width: 250px">
     <mat-card-header>
         <mat-card-title>Результуючі значення</mat-card-title>
     </mat-card-header>
     <mat-card-content>
         <mat-form-field *ngIf="isDistanceSetMode" class="fullWidthField">
             <mat-label>Потужність на вході приймача, Вт</mat-label>
-            <input matInput readonly type="number" [value]="ReceiverInputPower">
+            <input matInput readonly type="number" [value]="ReceiverInputPowerRounded">
         </mat-form-field>
         <mat-form-field *ngIf="isDistanceSetMode" class="fullWidthField">
             <mat-label>Мінімальна чутливість приймача, дБ/мВт</mat-label>
-            <input matInput readonly type="number" [value]="ReceiverMinimalSensivity">
+            <input matInput readonly type="number" [value]="ReceiverMinimalSensitivityRounded">
         </mat-form-field>
         <mat-form-field *ngIf="!isDistanceSetMode" class="fullWidthField">
             <mat-label>Максимальна відстань зв'язку</mat-label>
-            <input matInput readonly type="number" [value]="MaxTransmissionRange">
+            <input matInput readonly type="number" [value]="MaxTransmissionRangeRounded">
         </mat-form-field>
         <br>
         <mat-form-field class="fullWidthField">
             <mat-label>ККД передавача</mat-label>
-            <input matInput readonly type="number" [value]="TransmitterEfficiency">
+            <input matInput readonly type="number" [value]="TransmitterEfficiencyRounded">
         </mat-form-field>
         <br>
         <mat-form-field class="fullWidthField">
             <mat-label>Ефективна площа приймальної антени у кв.м</mat-label>
-            <input matInput readonly type="number" [value]="EffectiveReceiverSquare">
+            <input matInput readonly type="number" [value]="EffectiveReceiverSquareRounded">
         </mat-form-field>
         <br>
         <mat-form-field class="fullWidthField">
             <mat-label>ККД приймача</mat-label>
-            <input matInput readonly type="number" [value]="ReceiverEfficiency">
+            <input matInput readonly type="number" [value]="ReceiverEfficiencyRounded">
         </mat-form-field>
     </mat-card-content>
 </mat-card>

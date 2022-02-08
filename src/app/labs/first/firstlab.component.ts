@@ -5,6 +5,7 @@ import { FirstLabCalculation } from '../../../math/firstLabFormulas';
 import { /* ChartDataSets, */ ChartOptions, ChartType, Chart, registerables } from 'chart.js';
 import { ChartConfiguration } from 'chart.js';
 import { GraphPoint } from '../../../models/GraphPoint';
+import {retry} from 'rxjs/operators';
 
 @Component({
     selector: 'firstlab-app',
@@ -259,8 +260,8 @@ export class FirstLabComponent implements OnInit{
         const powerCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.transmitterPowerMap));
         const realTransmitterPower = this.transmitterPower * (powerCoefficient ? powerCoefficient : 1);
         const distancePoints: GraphPoint[] = [];
-        for(let x = 0; x <= maxRange; x += 200){
-            const y = FirstLabCalculation.CalculateReceiverInputPower(realTransmitterPower, 
+        for (let x = 0; x <= maxRange; x += 200){
+            const y = FirstLabCalculation.CalculateReceiverInputPower(realTransmitterPower,
                 this.transmitterDirectionalFactor,
                 this.receiverDirectionalFactor,
                 this.TransmitterEfficiency,
@@ -293,6 +294,10 @@ export class FirstLabComponent implements OnInit{
             waveLength,
             realRange);
     }
+    public get ReceiverInputPowerRounded(): number|string{
+      return this.roundValue(this.ReceiverInputPower);
+    }
+
     public get TransmitterEfficiency(): number{
         const prefix = this.valuesMap.indexOf(this.transmitterAntennaLengthMap);
         const lengthValueCoefficient = Utilities.valuesMap.get(prefix);
@@ -327,9 +332,41 @@ export class FirstLabComponent implements OnInit{
                 this.ReceiverEfficiency,
                     waveLength, this.receiverSensitivity);
     }
+
+    public get EffectiveReceiverSquareRounded(): number|string{
+      return this.roundValue(this.EffectiveReceiverSquare);
+    }
+
+    public get ReceiverEfficiencyRounded(): number|string{
+      return this.roundValue(this.ReceiverEfficiency);
+    }
+
+    public get MaxTransmissionRangeRounded(): number|string{
+      return this.roundValue(this.MaxTransmissionRange);
+    }
+
+    public get TransmitterEfficiencyRounded(): number|string{
+      return this.roundValue(this.TransmitterEfficiency);
+    }
+
     public get ReceiverMinimalSensivity(): number{
         return FirstLabCalculation.CalculateMinimalInputSensivity(this.ReceiverInputPower);
     }
+
+    public get ReceiverMinimalSensitivityRounded(): number|string{
+      return this.roundValue(this.ReceiverMinimalSensivity);
+    }
+
+    private roundValue(numm: number): number|string{
+      const value = Math.round(numm * 1000) / 1000;
+      if (value === 0){
+        const a = 1 / numm;
+        const decimals = Math.floor(Math.log10(a));
+        return ((Math.round(numm * Math.pow(10, decimals) * 1000) / 1000.0) / Math.pow(10.0, decimals));
+      }
+      return value;
+    }
+
     public showValue(val: number | string): string{
         return val.toString();
     }
