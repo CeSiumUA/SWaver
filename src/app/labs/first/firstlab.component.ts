@@ -9,6 +9,7 @@ import {retry} from 'rxjs/operators';
 import {FirstLabModel} from '../../../models/firstLabModel';
 import {stat} from 'fs';
 import {Utils} from '../../../models/utils';
+import functionPlot from 'function-plot';
 
 @Component({
     selector: 'firstlab-app',
@@ -200,6 +201,26 @@ export class FirstLabComponent implements OnInit{
         }
         return distancePoints;
     }
+  public get TraceChartPointsFunction(): string {
+    let maxRange = this.MaxTransmissionRange;
+    if (this.isDistanceSetMode){
+      const transmittingRangeCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.distanceMap));
+      const realRange = this.distance * (transmittingRangeCoefficient ? transmittingRangeCoefficient : 1);
+      maxRange = realRange;
+    }
+    const frequencyCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.frequencyMap));
+    const realFrequency = this.frequency * (frequencyCoefficient ? frequencyCoefficient : 1);
+    const waveLength = lightSpeed / realFrequency;
+
+    const powerCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.transmitterPowerMap));
+    const realTransmitterPower = this.transmitterPower * (powerCoefficient ? powerCoefficient : 1);
+    return FirstLabCalculation.CalculateReceiverInputPowerFunction(realTransmitterPower,
+      this.transmitterDirectionalFactor,
+      this.receiverDirectionalFactor,
+      this.TransmitterEfficiency,
+      this.ReceiverEfficiency,
+      waveLength);
+  }
     public get ReceiverInputPower(): number{
         const frequencyCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.frequencyMap));
         const realFrequency = this.frequency * (frequencyCoefficient ? frequencyCoefficient : 1);
@@ -361,6 +382,7 @@ export class FirstLabComponent implements OnInit{
             this.sensivityGraphConfig
             );
         }
+        this.drawFunction();
     }
 
     public saveCurrentState(): void{
@@ -402,9 +424,32 @@ export class FirstLabComponent implements OnInit{
         this.sensivityGraphConfig.data.labels = trajectoryChartPoints.map(pnt => pnt.x);
         this.sensivityGraphConfig.data.datasets[0].data = trajectoryChartPoints.map(pnt => pnt.y);
         this.firstChart?.update();
+        this.drawFunction();
       }
 
     public showValue(val: number | string): string{
         return val.toString();
     }
+
+  public drawFunction(): void{
+    functionPlot({
+      target: '#thirdGraph',
+      width: 800,
+      grid: true,
+      height: 400,
+      xAxis: {
+        label: 'м, Дальність',
+        domain: [0, 10000]
+      },
+      yAxis: {
+        label: 'Вт, Потужність на вході',
+        domain: [0, 0.01]
+      },
+      data: [
+        {
+          fn: this.TraceChartPointsFunction,
+        }
+      ]
+    });
+  }
 }

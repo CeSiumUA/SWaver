@@ -18,7 +18,7 @@ export class FirstLabCalculation{
                                      return maxRange;
     }
     public static CalculateEffectiveReceiverSquare(waveLength: number, receiverDirectionalFactor: number): number{
-        const square = (Math.pow(waveLength, 2)/(4 * Math.PI)) * receiverDirectionalFactor;
+        const square = (Math.pow(waveLength, 2) / (4 * Math.PI)) * receiverDirectionalFactor;
         return square;
     }
     public static CalculateReceiverInputPower(transmittingPower: number,
@@ -38,6 +38,20 @@ export class FirstLabCalculation{
                                                 const receiverPower = numerator / denominator;
                                                 return receiverPower;
     }
+  public static CalculateReceiverInputPowerFunction(transmittingPower: number,
+                                                    transmitterDirectionalFactor: number,
+                                                    receiverDirectionalFactor: number,
+                                                    transmitterEfficiency: number,
+                                                    receiverEfficiency: number,
+                                                    waveLength: number): string{
+    const numerator = transmittingPower *
+      transmitterDirectionalFactor *
+      receiverDirectionalFactor *
+      receiverEfficiency *
+      transmitterEfficiency *
+      Math.pow(waveLength, 2);
+    return `${numerator}/((4*3.14*x)^2)`;
+  }
     public static CalculateMinimalInputSensivity(receiverPower: number): number{
         const sensivity = 10 * Math.log10(receiverPower) + 30;
         return sensivity;
