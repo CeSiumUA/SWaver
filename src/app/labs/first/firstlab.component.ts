@@ -362,7 +362,7 @@ export class FirstLabComponent implements OnInit{
       if (value === 0){
         const a = 1 / numm;
         const decimals = Math.floor(Math.log10(a));
-        return ((Math.round(numm * Math.pow(10, decimals) * 1000) / 1000.0) / Math.pow(10.0, decimals));
+        return ((Math.round(numm * Math.pow(10, decimals) * 1000) / 1000.0) * Math.pow(10.0, -decimals));
       }
       return value;
     }
