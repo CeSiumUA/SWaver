@@ -60,6 +60,9 @@ export class SecondLabComponent implements OnInit{
 
         return SecondLabCalculation.CalculateFrenselZoneRadius(realWaveLength, realTracelength, realDistance, this.zoneNumber);
     }
+    public get FrenselZoneRadiusRounded(): number | string{
+      return this.roundValue(this.FrenselZoneRadius);
+    }
     public _traceLength = 20;
     public _traceLengthMap = 'k';
 
@@ -107,7 +110,7 @@ export class SecondLabComponent implements OnInit{
         this._angle = value;
         this.UpdateCharts();
     }
-    
+
     public _distanceToDiafragm = 18;
     public _distanceToDiafragmMap = 'k';
 
@@ -156,6 +159,16 @@ export class SecondLabComponent implements OnInit{
         this._zoneNumber = value;
         this.UpdateCharts();
     }
+
+  private roundValue(numm: number): number|string{
+    const value = Math.round(numm * 1000) / 1000;
+    if (value === 0){
+      const a = 1 / numm;
+      const decimals = Math.floor(Math.log10(a));
+      return ((Math.round(numm * Math.pow(10, decimals) * 1000) / 1000.0) * Math.pow(10.0, -decimals));
+    }
+    return value;
+  }
 
     private firstChart?: Chart;
     private secondChart?: Chart;

@@ -6,6 +6,9 @@ import { /* ChartDataSets, */ ChartOptions, ChartType, Chart, registerables } fr
 import { ChartConfiguration } from 'chart.js';
 import { GraphPoint } from '../../../models/GraphPoint';
 import {retry} from 'rxjs/operators';
+import {FirstLabModel} from '../../../models/firstLabModel';
+import {stat} from 'fs';
+import {Utils} from '../../../models/utils';
 
 @Component({
     selector: 'firstlab-app',
@@ -14,79 +17,8 @@ import {retry} from 'rxjs/operators';
 })
 export class FirstLabComponent implements OnInit{
 
-    public _isDistanceSetMode = true;
-
-    public _frequency = 50;
-    public _frequencyMap = 'M';
-
-    public _transmitterPower = 10;
-    public _transmitterPowerMap = 'One';
-
-    public _transmitterDirectionalFactor = 3;
-    public _transmitterSWR = 1.2;
-
-    public _receiverDirectionalFactor = 6;
-    public _receiverSWR = 1.5;
-
-    public _transmitterLinearAttenuation = 0.01;
-    public _transmitterAntennaLength = 25;
-    public _transmitterAntennaLengthMap = 'One';
-
-    public _receiverLinearAttenuation = 0.02;
-    public _receiverAntennaLength = 20;
-    public _receiverAntennaLengthMap = 'One';
-
-    public _distance = 10;
-    public _distanceMap = 'k';
-
-    private firstChart?: Chart;
-
-    public _receiverSensitivity = -40;
-
-    private sensivityGraphConfig: ChartConfiguration = {
-        type: 'line',
-        data: {
-          labels: this.TraceChartPoints.map(pnt => pnt.x),
-          datasets: [{
-            label: 'Залежність чутливості від відстані',
-            backgroundColor: 'rgb(255, 90, 132)',
-            borderColor: 'rgb(255, 90, 132)',
-            data: this.TraceChartPoints.map(pnt => pnt.y)
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-                beginAtZero: false,
-            },
-          },
-          plugins: {
-            tooltip: {
-              enabled: true,
-              callbacks: {
-                label: (a) => {
-                  return `Висота: ${a.raw}`;
-                }
-              }
-            }
-          }
-        }
-      };
-
     constructor(){
 
-    }
-    ngOnInit(): void {
-        let context1 = (document.getElementById('firstCanvas1') as HTMLCanvasElement)?.getContext('2d');
-        while (context1 === null){
-            context1 = (document.getElementById('firstCanvas1') as HTMLCanvasElement)?.getContext('2d');
-        }
-        if (context1) {
-            this.firstChart = new Chart(
-            context1,
-            this.sensivityGraphConfig
-            );
-        }
     }
     public get frequency(): number{
         return this._frequency;
@@ -127,7 +59,6 @@ export class FirstLabComponent implements OnInit{
         this._transmitterDirectionalFactor = value;
         this.UpdateCharts();
     }
-
     public get transmitterSWR(): number{
         return this._transmitterSWR;
     }
@@ -231,12 +162,6 @@ export class FirstLabComponent implements OnInit{
         this._isDistanceSetMode = value;
         this.UpdateCharts();
     }
-    private UpdateCharts(): void{
-        const trajectoryChartPoints = this.TraceChartPoints;
-        this.sensivityGraphConfig.data.labels = trajectoryChartPoints.map(pnt => pnt.x);
-        this.sensivityGraphConfig.data.datasets[0].data = trajectoryChartPoints.map(pnt => pnt.y);
-        this.firstChart?.update();
-      }
     public get calcSetMode(): string{
         return this.isDistanceSetMode ? 'Задання відстані' : 'Задання чутливості приймача';
     }
@@ -295,7 +220,7 @@ export class FirstLabComponent implements OnInit{
             realRange);
     }
     public get ReceiverInputPowerRounded(): number|string{
-      return this.roundValue(this.ReceiverInputPower);
+      return Utils.roundValue(this.ReceiverInputPower);
     }
 
     public get TransmitterEfficiency(): number{
@@ -334,19 +259,19 @@ export class FirstLabComponent implements OnInit{
     }
 
     public get EffectiveReceiverSquareRounded(): number|string{
-      return this.roundValue(this.EffectiveReceiverSquare);
+      return Utils.roundValue(this.EffectiveReceiverSquare);
     }
 
     public get ReceiverEfficiencyRounded(): number|string{
-      return this.roundValue(this.ReceiverEfficiency);
+      return Utils.roundValue(this.ReceiverEfficiency);
     }
 
     public get MaxTransmissionRangeRounded(): number|string{
-      return this.roundValue(this.MaxTransmissionRange);
+      return Utils.roundValue(this.MaxTransmissionRange);
     }
 
     public get TransmitterEfficiencyRounded(): number|string{
-      return this.roundValue(this.TransmitterEfficiency);
+      return Utils.roundValue(this.TransmitterEfficiency);
     }
 
     public get ReceiverMinimalSensivity(): number{
@@ -354,18 +279,130 @@ export class FirstLabComponent implements OnInit{
     }
 
     public get ReceiverMinimalSensitivityRounded(): number|string{
-      return this.roundValue(this.ReceiverMinimalSensivity);
+      return Utils.roundValue(this.ReceiverMinimalSensivity);
     }
 
-    private roundValue(numm: number): number|string{
-      const value = Math.round(numm * 1000) / 1000;
-      if (value === 0){
-        const a = 1 / numm;
-        const decimals = Math.floor(Math.log10(a));
-        return ((Math.round(numm * Math.pow(10, decimals) * 1000) / 1000.0) * Math.pow(10.0, -decimals));
-      }
-      return value;
+    public _isDistanceSetMode = true;
+
+    public _frequency = 50;
+    public _frequencyMap = 'M';
+
+    public _transmitterPower = 10;
+    public _transmitterPowerMap = 'One';
+
+    public _transmitterDirectionalFactor = 3;
+    public _transmitterSWR = 1.2;
+
+    public _receiverDirectionalFactor = 6;
+    public _receiverSWR = 1.5;
+
+    public _transmitterLinearAttenuation = 0.01;
+    public _transmitterAntennaLength = 25;
+    public _transmitterAntennaLengthMap = 'One';
+
+    public _receiverLinearAttenuation = 0.02;
+    public _receiverAntennaLength = 20;
+    public _receiverAntennaLengthMap = 'One';
+
+    public _distance = 10;
+    public _distanceMap = 'k';
+
+    private firstChart?: Chart;
+
+    public _receiverSensitivity = -40;
+
+    private sensivityGraphConfig: ChartConfiguration = {
+        type: 'line',
+        data: {
+          labels: this.TraceChartPoints.map(pnt => pnt.x),
+          datasets: [{
+            label: 'Залежність чутливості від відстані',
+            backgroundColor: 'rgb(255, 90, 132)',
+            borderColor: 'rgb(255, 90, 132)',
+            data: this.TraceChartPoints.map(pnt => pnt.y)
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+                beginAtZero: false,
+            },
+          },
+          plugins: {
+            tooltip: {
+              enabled: true,
+              callbacks: {
+                label: (a) => {
+                  return `Висота: ${a.raw}`;
+                }
+              }
+            }
+          }
+        }
+      };
+    private static getStates(): FirstLabModel[]{
+      const storageValues = localStorage.getItem('states');
+      if (storageValues === null) { return []; }
+      return JSON.parse(storageValues);
     }
+    private static addState(state: FirstLabModel): void{
+      const savedStates = FirstLabComponent.getStates();
+      savedStates.push(state);
+      localStorage.setItem('states', JSON.stringify(savedStates));
+    }
+    ngOnInit(): void {
+        let context1 = (document.getElementById('firstCanvas1') as HTMLCanvasElement)?.getContext('2d');
+        while (context1 === null){
+            context1 = (document.getElementById('firstCanvas1') as HTMLCanvasElement)?.getContext('2d');
+        }
+        if (context1) {
+            this.firstChart = new Chart(
+            context1,
+            this.sensivityGraphConfig
+            );
+        }
+    }
+
+    public saveCurrentState(): void{
+      const state: FirstLabModel = {
+        isDistanceSetMode: this._isDistanceSetMode,
+        frequency: {
+          value: this._frequency,
+          prefix: this._frequencyMap
+        },
+        transmitterPower: {
+          value: this._transmitterPower,
+          prefix: this._transmitterPowerMap
+        },
+        transmitterDirectionalFactor: this._transmitterDirectionalFactor,
+        transmitterSWR: this._transmitterSWR,
+        receiverDirectionalFactor: this._receiverDirectionalFactor,
+        receiverSWR: this._receiverSWR,
+        transmitterLinearAttenuation: this._transmitterLinearAttenuation,
+        transmitterAntennaLength: {
+          value: this._transmitterAntennaLength,
+          prefix: this._transmitterAntennaLengthMap
+        },
+        receiverLinearAttenuation: this._receiverLinearAttenuation,
+        receiverAntennaLength: {
+          value: this._receiverAntennaLength,
+          prefix: this._receiverAntennaLengthMap
+        },
+        distance: {
+          value: this._distance,
+          prefix: this._distanceMap
+        },
+        receiverSensitivity: this._receiverSensitivity,
+        graphPoints: this.TraceChartPoints
+      };
+      FirstLabComponent.addState(state);
+    }
+    private UpdateCharts(): void{
+        const trajectoryChartPoints = this.TraceChartPoints;
+        this.sensivityGraphConfig.data.labels = trajectoryChartPoints.map(pnt => pnt.x);
+        this.sensivityGraphConfig.data.datasets[0].data = trajectoryChartPoints.map(pnt => pnt.y);
+        this.firstChart?.update();
+      }
 
     public showValue(val: number | string): string{
         return val.toString();
