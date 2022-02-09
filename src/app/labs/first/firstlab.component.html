@@ -381,6 +381,7 @@
     </mat-card-content>
 </mat-card>
 <div class="graphElement" id="thirdGraph"></div>
-<!-- <div style="display: block; width: 60%; margin-left: auto; margin-right: auto;">
-    <canvas baseChart id="testCanvas"></canvas>
-</div> -->
+<mat-form-field appearance="fill">
+    <mat-label>Співвідношення x:y</mat-label>
+    <input type="number" matInput [(ngModel)]="axisScale">
+</mat-form-field>

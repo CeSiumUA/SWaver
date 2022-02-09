@@ -364,35 +364,29 @@ export class FirstLabComponent implements OnInit{
         }
       };
     private static getStates(): FirstLabModel[]{
-      const storageValues = sessionStorage.getItem('firstLabStates');
+      const storageValues = localStorage.getItem('firstLabStates');
       if (storageValues === null) { return []; }
       return JSON.parse(storageValues);
     }
     private static addState(state: FirstLabModel): void{
       const savedStates = FirstLabComponent.getStates();
       savedStates.push(state);
-      sessionStorage.setItem('firstLabStates', JSON.stringify(savedStates));
+      localStorage.setItem('firstLabStates', JSON.stringify(savedStates));
     }
 
     public clearStorage(): void{
-      sessionStorage.setItem('firstLabStates', JSON.stringify([]));
+      localStorage.setItem('firstLabStates', JSON.stringify([]));
     }
 
     ngOnInit(): void {
-        let context1 = (document.getElementById('firstCanvas1') as HTMLCanvasElement)?.getContext('2d');
-        while (context1 === null){
-            context1 = (document.getElementById('firstCanvas1') as HTMLCanvasElement)?.getContext('2d');
-        }
-        if (context1) {
-            this.firstChart = new Chart(
-            context1,
-            this.sensivityGraphConfig
-            );
-        }
         this.drawFunction();
     }
 
     public saveCurrentState(): void{
+      const state = this.currentState;
+      FirstLabComponent.addState(state);
+    }
+    private get currentState(): FirstLabModel{
       const state: FirstLabModel = {
         isDistanceSetMode: this._isDistanceSetMode,
         frequency: {
@@ -424,13 +418,9 @@ export class FirstLabComponent implements OnInit{
         receiverSensitivity: this._receiverSensitivity,
         graphFunction: this.TraceChartPointsFunction
       };
-      FirstLabComponent.addState(state);
+      return state;
     }
     private UpdateCharts(): void{
-        const trajectoryChartPoints = this.TraceChartPoints;
-        this.sensivityGraphConfig.data.labels = trajectoryChartPoints.map(pnt => pnt.x);
-        this.sensivityGraphConfig.data.datasets[0].data = trajectoryChartPoints.map(pnt => pnt.y);
-        this.firstChart?.update();
         this.drawFunction();
       }
 
@@ -438,7 +428,20 @@ export class FirstLabComponent implements OnInit{
         return val.toString();
     }
 
+  private _axisScale = 1000000;
+
+  public get axisScale(): number{
+    return this._axisScale;
+  }
+
+  public set axisScale(value: number){
+    this._axisScale = value;
+    this.UpdateCharts();
+  }
+
   public drawFunction(): void{
+    const yMax = 0.01;
+    const xAxisScale = yMax * this.axisScale;
       const options: FunctionPlotOptions = {
         target: '#thirdGraph',
         width: 800,
@@ -446,11 +449,11 @@ export class FirstLabComponent implements OnInit{
         height: 400,
         xAxis: {
           label: 'м, Дальність',
-          domain: [0, 10000]
+          domain: [0, xAxisScale]
         },
         yAxis: {
           label: 'Вт, Потужність на вході',
-          domain: [0, 0.01]
+          domain: [0, yMax]
         },
         data: [
           {
