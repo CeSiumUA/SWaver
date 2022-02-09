@@ -10,6 +10,8 @@ import {FirstLabModel} from '../../../models/firstLabModel';
 import {stat} from 'fs';
 import {Utils} from '../../../models/utils';
 import functionPlot from 'function-plot';
+import {FunctionPlotDatum, FunctionPlotOptions} from 'function-plot/dist/types';
+import {fn} from '@angular/compiler/src/output/output_ast';
 
 @Component({
     selector: 'firstlab-app',
@@ -362,15 +364,20 @@ export class FirstLabComponent implements OnInit{
         }
       };
     private static getStates(): FirstLabModel[]{
-      const storageValues = localStorage.getItem('states');
+      const storageValues = sessionStorage.getItem('firstLabStates');
       if (storageValues === null) { return []; }
       return JSON.parse(storageValues);
     }
     private static addState(state: FirstLabModel): void{
       const savedStates = FirstLabComponent.getStates();
       savedStates.push(state);
-      localStorage.setItem('states', JSON.stringify(savedStates));
+      sessionStorage.setItem('firstLabStates', JSON.stringify(savedStates));
     }
+
+    public clearStorage(): void{
+      sessionStorage.setItem('firstLabStates', JSON.stringify([]));
+    }
+
     ngOnInit(): void {
         let context1 = (document.getElementById('firstCanvas1') as HTMLCanvasElement)?.getContext('2d');
         while (context1 === null){
@@ -415,7 +422,7 @@ export class FirstLabComponent implements OnInit{
           prefix: this._distanceMap
         },
         receiverSensitivity: this._receiverSensitivity,
-        graphPoints: this.TraceChartPoints
+        graphFunction: this.TraceChartPointsFunction
       };
       FirstLabComponent.addState(state);
     }
@@ -432,24 +439,32 @@ export class FirstLabComponent implements OnInit{
     }
 
   public drawFunction(): void{
-    functionPlot({
-      target: '#thirdGraph',
-      width: 800,
-      grid: true,
-      height: 400,
-      xAxis: {
-        label: 'м, Дальність',
-        domain: [0, 10000]
-      },
-      yAxis: {
-        label: 'Вт, Потужність на вході',
-        domain: [0, 0.01]
-      },
-      data: [
-        {
-          fn: this.TraceChartPointsFunction,
-        }
-      ]
-    });
+      const options: FunctionPlotOptions = {
+        target: '#thirdGraph',
+        width: 800,
+        grid: true,
+        height: 400,
+        xAxis: {
+          label: 'м, Дальність',
+          domain: [0, 10000]
+        },
+        yAxis: {
+          label: 'Вт, Потужність на вході',
+          domain: [0, 0.01]
+        },
+        data: [
+          {
+            fn: this.TraceChartPointsFunction,
+          }
+        ]
+      };
+      const storedFunctions = FirstLabComponent.getStates().map(x => x.graphFunction);
+      storedFunctions.push(this.TraceChartPointsFunction);
+      options.data = storedFunctions.map<FunctionPlotDatum>(x => {
+        return {
+          fn: x
+        };
+      });
+      functionPlot(options);
   }
 }

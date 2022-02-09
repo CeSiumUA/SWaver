@@ -15,5 +15,5 @@ export interface FirstLabModel{
   receiverAntennaLength: ConvertableValue;
   distance?: ConvertableValue;
   receiverSensitivity?: number;
-  graphPoints: GraphPoint[];
+  graphFunction: string;
 }
