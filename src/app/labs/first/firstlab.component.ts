@@ -417,7 +417,7 @@ export class FirstLabComponent implements OnInit{
         },
         receiverSensitivity: this._receiverSensitivity,
         graphFunction: this.TraceChartPointsFunction,
-        graphColor: '#' + (0x1000000 + Math.random() * 0xFFFFFF).toString(16).substr(1,6)
+        graphColor: this.mainFunctionColor
       };
       return state;
     }
@@ -487,6 +487,15 @@ export class FirstLabComponent implements OnInit{
     return models;
   }
   public get displayGraphHistoryColumns(): string[]{
-    return ['function'];
+    return ['frequency',
+     'transmitterPower',
+      'transmitterDirectionalFactor',
+       'transmitterSWR',
+        'receiverDirectionalFactor',
+         'receiverSWR',
+          'transmitterLinearAttenuation',
+           'receiverLinearAttenuation',
+            'receiverAntennaLength',
+             'transmitterAntennaLength'];
   }
 }
