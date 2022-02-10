@@ -416,7 +416,8 @@ export class FirstLabComponent implements OnInit{
           prefix: this._distanceMap
         },
         receiverSensitivity: this._receiverSensitivity,
-        graphFunction: this.TraceChartPointsFunction
+        graphFunction: this.TraceChartPointsFunction,
+        graphColor: '#' + (0x1000000 + Math.random() * 0xFFFFFF).toString(16).substr(1,6)
       };
       return state;
     }
@@ -461,13 +462,31 @@ export class FirstLabComponent implements OnInit{
           }
         ]
       };
-      const storedFunctions = FirstLabComponent.getStates().map(x => x.graphFunction);
-      storedFunctions.push(this.TraceChartPointsFunction);
+      const storedFunctions = FirstLabComponent.getStates().map(x => {
+        return {
+          function: x.graphFunction,
+          color: x.graphColor
+        }
+      });
+      storedFunctions.push({
+        function: this.TraceChartPointsFunction,
+        color: this.mainFunctionColor
+      });
       options.data = storedFunctions.map<FunctionPlotDatum>(x => {
         return {
-          fn: x
+          fn: x.function,
+          color: x.color
         };
       });
       functionPlot(options);
+  }
+  private mainFunctionColor = '#' + (0x1000000 + Math.random() * 0xFFFFFF).toString(16).substr(1,6);
+  public get graphValues(): FirstLabModel[]{
+    const models = FirstLabComponent.getStates();
+    models.push(this.currentState);
+    return models;
+  }
+  public get displayGraphHistoryColumns(): string[]{
+    return ['function'];
   }
 }

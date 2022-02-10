@@ -16,4 +16,5 @@ export interface FirstLabModel{
   distance?: ConvertableValue;
   receiverSensitivity?: number;
   graphFunction: string;
+  graphColor: string;
 }

@@ -381,7 +381,24 @@
     </mat-card-content>
 </mat-card>
 <div class="graphElement" id="thirdGraph"></div>
-<mat-form-field appearance="fill">
+<mat-form-field>
     <mat-label>Співвідношення x:y</mat-label>
     <input type="number" matInput [(ngModel)]="axisScale">
 </mat-form-field>
+<mat-accordion>
+    <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Позначення на графіку
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <table mat-table [dataSource]="graphValues">
+            <ng-container matColumnDef="function">
+                <th mat-header-cell *matHeaderCellDef>Функція</th>
+                <td mat-cell *matCellDef="let element"><p [style.color]="element.graphColor">{{element.graphFunction}}</p></td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayGraphHistoryColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayGraphHistoryColumns;"></tr>
+        </table>
+    </mat-expansion-panel>
+</mat-accordion>
