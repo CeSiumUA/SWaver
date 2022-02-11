@@ -228,7 +228,7 @@ export class ThirdlabComponent implements OnInit {
       const angle = pnt * Math.PI / 180;
       return {
         x: pnt,
-        y: this.earthSelected === 1 ? 1 : (this.normalPolarization ? (Math.abs((Math.sin(angle) - Math.sqrt(25 - Math.pow(Math.cos(angle), 2))) / (Math.sin(angle) + Math.sqrt(25 - Math.pow(Math.cos(angle), 2))))) : 
+        y: this.earthSelected === 1 ? 1 : (this.normalPolarization ? (Math.abs((Math.sin(angle) - Math.sqrt(25 - Math.pow(Math.cos(angle), 2))) / (Math.sin(angle) + Math.sqrt(25 - Math.pow(Math.cos(angle), 2))))) :
         (Math.abs((25 * Math.sin(angle) - Math.sqrt(25 - Math.pow(Math.cos(angle), 2))) / (25 * Math.sin(angle) + Math.sqrt(25 - Math.pow(Math.cos(angle), 2))))))
       }
     });
@@ -250,7 +250,7 @@ export class ThirdlabComponent implements OnInit {
     const distanceCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.traceLengthMap));
     const realDistance = this.traceLength * (distanceCoefficient ? distanceCoefficient : 1);
     const numbers: number[] = [];
-    for(let i = 0; i < realDistance + 50; i+= 10){
+    for (let i = 0; i < realDistance + 50; i += 10){
       numbers.push(i);
     }
     return numbers;
@@ -303,7 +303,7 @@ export class ThirdlabComponent implements OnInit {
 
     const r1 = realTransmitterHeight / (Math.sin(Math.atan((realReceiverHeight + realTransmitterHeight) / realDistance)));
     const r2 = realReceiverHeight / (Math.sin(Math.atan((realReceiverHeight + realTransmitterHeight) / realDistance)));
-    
+
     const lm = 2 * Math.sqrt(realWaveLength * r1 * r2 / realDistance);
 
     const lb = lm * realDistance / Math.sqrt(Math.pow(lm, 2) + Math.pow(realDistance, 2) * ((realReceiverHeight + realTransmitterHeight) / realDistance));

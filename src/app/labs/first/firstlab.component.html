@@ -418,19 +418,19 @@
                 <td mat-cell *matCellDef="let element"><p>{{element.receiverSWR}}</p></td>
             </ng-container>
             <ng-container matColumnDef="transmitterLinearAttenuation">
-                <th mat-header-cell *matHeaderCellDef>Погонне загасання передавача</th>
+                <th mat-header-cell *matHeaderCellDef>Затухання в фідері</th>
                 <td mat-cell *matCellDef="let element"><p>{{element.transmitterLinearAttenuation}} dB/m</p></td>
             </ng-container>
             <ng-container matColumnDef="transmitterAntennaLength">
-                <th mat-header-cell *matHeaderCellDef>Довжина антени передавача</th>
+                <th mat-header-cell *matHeaderCellDef>Довжина фідера передавача</th>
                 <td mat-cell *matCellDef="let element"><p>{{element.transmitterAntennaLength.value}} {{element.transmitterAntennaLength.prefix}}m</p></td>
             </ng-container>
             <ng-container matColumnDef="receiverLinearAttenuation">
-                <th mat-header-cell *matHeaderCellDef>Погонне загасання приймача</th>
+                <th mat-header-cell *matHeaderCellDef>Затухання в фідері</th>
                 <td mat-cell *matCellDef="let element"><p>{{element.receiverLinearAttenuation}} dB/m</p></td>
             </ng-container>
             <ng-container matColumnDef="receiverAntennaLength">
-                <th mat-header-cell *matHeaderCellDef>Довжина антени приймача</th>
+                <th mat-header-cell *matHeaderCellDef>Довжина фідера приймача</th>
                 <td mat-cell *matCellDef="let element"><p>{{element.receiverAntennaLength.value}} {{element.receiverAntennaLength.prefix}}m</p></td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayGraphHistoryColumns"></tr>
