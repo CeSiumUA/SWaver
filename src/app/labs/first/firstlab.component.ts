@@ -223,6 +223,14 @@ export class FirstLabComponent implements OnInit{
       this.ReceiverEfficiency,
       waveLength);
   }
+
+  public get EfficiencyChartPointsFunction(): string{
+    const prefix = this.valuesMap.indexOf(this.transmitterAntennaLengthMap);
+    const lengthValueCoefficient = Utilities.valuesMap.get(prefix);
+    const realLengthValue = this.transmitterAntennaLength * (lengthValueCoefficient ? lengthValueCoefficient : 1);
+    return FirstLabCalculation.CalculateEfficiencyFunction(this.transmitterLinearAttenuation, this.transmitterSWR);
+  }
+
     public get ReceiverInputPower(): number{
         const frequencyCoefficient = Utilities.valuesMap.get(this.valuesMap.indexOf(this.frequencyMap));
         const realFrequency = this.frequency * (frequencyCoefficient ? frequencyCoefficient : 1);
@@ -416,7 +424,8 @@ export class FirstLabComponent implements OnInit{
           prefix: this._distanceMap
         },
         receiverSensitivity: this._receiverSensitivity,
-        graphFunction: this.TraceChartPointsFunction,
+        powerGraphFunction: this.TraceChartPointsFunction,
+        efficiencyGraphFunction: this.EfficiencyChartPointsFunction,
         graphColor: this.mainFunctionColor
       };
       return state;
@@ -429,56 +438,93 @@ export class FirstLabComponent implements OnInit{
         return val.toString();
     }
 
-  private _axisScale = 1000000;
+  private _axisScale1 = 1000000;
+  private _axisScale2 = 50;
 
-  public get axisScale(): number{
-    return this._axisScale;
+  public get axisScale1(): number{
+    return this._axisScale1;
   }
 
-  public set axisScale(value: number){
-    this._axisScale = value;
+  public set axisScale1(value: number){
+    this._axisScale1 = value;
+    this.UpdateCharts();
+  }
+
+  public get axisScale2(): number{
+    return this._axisScale2;
+  }
+
+  public set axisScale2(value: number){
+    this._axisScale2 = value;
     this.UpdateCharts();
   }
 
   public drawFunction(): void{
-    const yMax = 0.01;
-    const xAxisScale = yMax * this.axisScale;
-      const options: FunctionPlotOptions = {
-        target: '#thirdGraph',
-        width: 800,
-        grid: true,
-        height: 400,
-        xAxis: {
-          label: 'м, Дальність',
-          domain: [0, xAxisScale]
-        },
-        yAxis: {
-          label: 'Вт, Потужність на вході',
-          domain: [0, yMax]
-        },
-        data: [
-          {
-            fn: this.TraceChartPointsFunction,
-          }
-        ]
+    const yMax1 = 0.01;
+    const xAxisScale1 = yMax1 * this.axisScale1;
+
+    const yMax2 = 1.5;
+    const xAxisScale2 = yMax2 * this.axisScale2;
+
+    const storedFunctions = FirstLabComponent.getStates().map(x => {
+      return {
+        powerGraphFunction: x.powerGraphFunction,
+        efficiencyGraphFunction: x.efficiencyGraphFunction,
+        color: x.graphColor
+      }
+    });
+    storedFunctions.push({
+      powerGraphFunction: this.TraceChartPointsFunction,
+      efficiencyGraphFunction: this.EfficiencyChartPointsFunction,
+      color: this.mainFunctionColor
+    });
+
+    const options1: FunctionPlotOptions = {
+      target: '#thirdGraph',
+      width: 800,
+      grid: true,
+      height: 400,
+      xAxis: {
+        label: 'м, Дальність',
+        domain: [0, xAxisScale1]
+      },
+      yAxis: {
+        label: 'Вт, Потужність на вході',
+        domain: [0, yMax1]
+      },
+      data: []
+    };
+    const options2: FunctionPlotOptions = {
+      target: '#efficiencyGraph',
+      width: 800,
+      grid: true,
+      height: 400,
+      xAxis: {
+        label: 'м, довжина фідера передавача',
+        domain: [0, xAxisScale2]
+      },
+      yAxis: {
+        label: 'ККД передавача',
+        domain: [0, yMax2]
+      },
+      data: []
+    };
+    options1.data = storedFunctions.map<FunctionPlotDatum>(x => {
+      return {
+        fn: x.powerGraphFunction,
+        color: x.color,
+        range: [0, Infinity]
       };
-      const storedFunctions = FirstLabComponent.getStates().map(x => {
-        return {
-          function: x.graphFunction,
-          color: x.graphColor
-        }
-      });
-      storedFunctions.push({
-        function: this.TraceChartPointsFunction,
-        color: this.mainFunctionColor
-      });
-      options.data = storedFunctions.map<FunctionPlotDatum>(x => {
-        return {
-          fn: x.function,
-          color: x.color
-        };
-      });
-      functionPlot(options);
+    });
+    options2.data = storedFunctions.map<FunctionPlotDatum>(x => {
+      return {
+        fn: x.efficiencyGraphFunction,
+        color: x.color,
+        range: [0, Infinity]
+      };
+    });
+    functionPlot(options1);
+    functionPlot(options2);
   }
   private mainFunctionColor = '#' + (0x1000000 + Math.random() * 0xFFFFFF).toString(16).substr(1,6);
   public get graphValues(): FirstLabModel[]{
