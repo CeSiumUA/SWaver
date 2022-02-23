@@ -1,400 +1,402 @@
-<mat-card class="resultForm mainFormLeft">
-    <mat-card-header>
-        <mat-card-title>ДОСЛІДЖЕННЯ ПОШИРЕННЯ РАДІОХВИЛЬ
-    У ВІЛЬНОМУ ПРОСТОРІ</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <table class="fullWidthField" cellspacing="0">
-            <tr>
-                <td>
-                    <mat-form-field class="fullWidthField">
-                        <mat-label>Частота</mat-label>
-                        <input matInput type="number" [(ngModel)]="frequency" value="0">
-                    </mat-form-field>
-                </td>
-                <td>
-                    <mat-form-field class="fullWidthField">
-                        <mat-label>Одиниці виміру</mat-label>
-                        <mat-select [(value)]="frequencyMap">
-                            <mat-option *ngFor="let vl of valuesMap" [value]="vl">
-                                {{vl}}Hz
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <mat-slider class="fullWidthField"
-                        thumbLabel
-                        [displayWith]="showValue"
-                        step="1"
-                        color="primary"
-                        min="0"
-                        [(ngModel)]="frequency"
-                        max="1000"
-                        aria-label="units"></mat-slider>
-                </td>
-            </tr>
-        </table>
-        <table class="fullWidthField" cellspacing="0">
-            <tr>
-                <td>
-                    <mat-form-field class="fullWidthField">
-                        <mat-label>Потужність передавача</mat-label>
-                        <input matInput type="number" [(ngModel)]="transmitterPower" value="0">
-                    </mat-form-field>
-                </td>
-                <td>
-                    <mat-form-field class="fullWidthField">
-                        <mat-label>Одиниці виміру</mat-label>
-                        <mat-select [(value)]="transmitterPowerMap">
-                            <mat-option *ngFor="let vl of valuesMap" [value]="vl">
-                                {{vl}}W
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <mat-slider class="fullWidthField"
-                        thumbLabel
-                        [displayWith]="showValue"
-                        step="1"
-                        color="primary"
-                        min="0"
-                        [(ngModel)]="transmitterPower"
-                        max="1000"
-                        aria-label="units"></mat-slider>
-                </td>
-            </tr>
-        </table>
-        <mat-accordion multi>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Передаюча антена</mat-panel-title>
-                    <mat-panel-description>Основні параметри передаючої антени</mat-panel-description>
-                </mat-expansion-panel-header>
-                <table class="fullWidthField" cellspacing="0">
-                    <tr>
-                        <td colspan="1">
-                            <mat-form-field class="fullWidthField">
-                                <mat-label>КНД в дБ</mat-label>
-                                <input matInput type="number" [(ngModel)]="transmitterDirectionalFactor" value="0">
-                            </mat-form-field>
-                        </td>
-                        <td colspan="1">
-                            <mat-slider class="fullWidthField"
-                                thumbLabel
-                                [displayWith]="showValue"
-                                step="0.1"
-                                color="primary"
-                                min="0"
-                                [(ngModel)]="transmitterDirectionalFactor"
-                                max="100"
-                                aria-label="units"></mat-slider>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="1">
-                            <mat-form-field class="fullWidthField">
-                                <mat-label>КСХ</mat-label>
-                                <input matInput type="number" [(ngModel)]="transmitterSWR" value="0">
-                            </mat-form-field>
-                        </td>
-                        <td colspan="1">
-                            <mat-slider class="fullWidthField"
-                                thumbLabel
-                                [displayWith]="showValue"
-                                step="0.1"
-                                color="primary"
-                                min="0"
-                                [(ngModel)]="transmitterSWR"
-                                max="10"
-                                aria-label="units"></mat-slider>
-                        </td>
-                    </tr>
-                </table>
-            </mat-expansion-panel>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Приймаюча антена</mat-panel-title>
-                    <mat-panel-description>Основні параметри приймаючої антени</mat-panel-description>
-                </mat-expansion-panel-header>
-                <table class="fullWidthField" cellspacing="0">
-                    <tr>
-                        <td colspan="1">
-                            <mat-form-field class="fullWidthField">
-                                <mat-label>КНД в дБ</mat-label>
-                                <input matInput type="number" [(ngModel)]="receiverDirectionalFactor" value="0">
-                            </mat-form-field>
-                        </td>
-                        <td colspan="1">
-                            <mat-slider class="fullWidthField"
-                                thumbLabel
-                                [displayWith]="showValue"
-                                step="0.1"
-                                color="primary"
-                                min="0"
-                                [(ngModel)]="receiverDirectionalFactor"
-                                max="100"
-                                aria-label="units"></mat-slider>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="1">
-                            <mat-form-field class="fullWidthField">
-                                <mat-label>КСХ</mat-label>
-                                <input matInput type="number" [(ngModel)]="receiverSWR" value="0">
-                            </mat-form-field>
-                        </td>
-                        <td colspan="1">
-                            <mat-slider class="fullWidthField"
-                                thumbLabel
-                                [displayWith]="showValue"
-                                step="0.1"
-                                color="primary"
-                                min="0"
-                                [(ngModel)]="receiverSWR"
-                                max="10"
-                                aria-label="units"></mat-slider>
-                        </td>
-                    </tr>
-                </table>
-            </mat-expansion-panel>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Фідер передавача</mat-panel-title>
-                    <mat-panel-description>Основні параметри фідера передавача</mat-panel-description>
-                </mat-expansion-panel-header>
-                <table class="fullWidthField" cellspacing="0">
-                    <tr>
-                        <td colspan="1">
-                            <mat-form-field class="fullWidthField">
-                                <mat-label>Погонне затухання в дБ/м</mat-label>
-                                <input matInput type="number" [(ngModel)]="transmitterLinearAttenuation" value="0">
-                            </mat-form-field>
-                        </td>
-                        <td colspan="1">
-                            <mat-slider class="fullWidthField"
-                                thumbLabel
-                                [displayWith]="showValue"
-                                step="0.01"
-                                color="primary"
-                                min="0"
-                                [(ngModel)]="transmitterLinearAttenuation"
-                                max="1"
-                                aria-label="units"></mat-slider>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <mat-form-field class="fullWidthField">
-                                <mat-label>Довжина антени</mat-label>
-                                <input matInput type="number" [(ngModel)]="transmitterAntennaLength" value="0">
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="fullWidthField">
-                                <mat-label>Одиниці виміру</mat-label>
-                                <mat-select [(value)]="transmitterAntennaLengthMap">
-                                    <mat-option *ngFor="let vl of valuesMap" [value]="vl">
-                                        {{vl}}m
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <mat-slider class="fullWidthField"
-                                thumbLabel
-                                [displayWith]="showValue"
-                                step="1"
-                                color="primary"
-                                min="0"
-                                [(ngModel)]="transmitterAntennaLength"
-                                max="1000"
-                                aria-label="units"></mat-slider>
-                        </td>
-                    </tr>
-                </table>
-            </mat-expansion-panel>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Фідер приймача</mat-panel-title>
-                    <mat-panel-description>Основні параметри фідера приймача</mat-panel-description>
-                </mat-expansion-panel-header>
-                <table class="fullWidthField" cellspacing="0">
-                    <tr>
-                        <td colspan="1">
-                            <mat-form-field class="fullWidthField">
-                                <mat-label>Погонне затухання в дБ/м</mat-label>
-                                <input matInput type="number" [(ngModel)]="receiverLinearAttenuation" value="0">
-                            </mat-form-field>
-                        </td>
-                        <td colspan="1">
-                            <mat-slider class="fullWidthField"
-                                thumbLabel
-                                [displayWith]="showValue"
-                                step="0.01"
-                                color="primary"
-                                min="0"
-                                [(ngModel)]="receiverLinearAttenuation"
-                                max="1"
-                                aria-label="units"></mat-slider>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <mat-form-field class="fullWidthField">
-                                <mat-label>Довжина антени</mat-label>
-                                <input matInput type="number" [(ngModel)]="receiverAntennaLength" value="0">
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="fullWidthField">
-                                <mat-label>Одиниці виміру</mat-label>
-                                <mat-select [(value)]="receiverAntennaLengthMap">
-                                    <mat-option *ngFor="let vl of valuesMap" [value]="vl">
-                                        {{vl}}m
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <mat-slider class="fullWidthField"
-                                thumbLabel
-                                [displayWith]="showValue"
-                                step="1"
-                                color="primary"
-                                min="0"
-                                [(ngModel)]="receiverAntennaLength"
-                                max="1000"
-                                aria-label="units"></mat-slider>
-                        </td>
-                    </tr>
-                </table>
-            </mat-expansion-panel>
-        </mat-accordion>
-        <br>
-        <table class="fullWidthField" cellspacing="0">
-            <tr>
-                <td colspan="2">
-                    <mat-slide-toggle class="fullWidthField" color="primary" [(ngModel)]="isDistanceSetMode">
-                        {{calcSetMode}}
-                    </mat-slide-toggle>
-                </td>
-            </tr>
-            <tr *ngIf="isDistanceSetMode">
-                <td>
-                    <mat-form-field class="fullWidthField">
-                        <mat-label>Відстань</mat-label>
-                        <input matInput type="number" [(ngModel)]="distance" value="0">
-                    </mat-form-field>
-                </td>
-                <td>
-                    <mat-form-field class="fullWidthField">
-                        <mat-label>Одиниці виміру</mat-label>
-                        <mat-select [(value)]="distanceMap">
-                            <mat-option *ngFor="let vl of valuesMap" [value]="vl">
-                                {{vl}}m
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </td>
-            </tr>
-            <tr *ngIf="isDistanceSetMode">
-                <td colspan="2">
-                    <mat-slider class="fullWidthField"
-                                thumbLabel
-                                [displayWith]="showValue"
-                                step="1"
-                                color="primary"
-                                min="0"
-                                [(ngModel)]="distance"
-                                max="1000"
-                                aria-label="units"></mat-slider>
-                </td>
-            </tr>
-            <tr *ngIf="!isDistanceSetMode">
-                <td colspan="1">
-                    <mat-form-field class="fullWidthField">
-                        <mat-label>Чутливість приймача в дБ/мВт</mat-label>
-                        <input matInput type="number" [(ngModel)]="receiverSensitivity" value="0">
-                    </mat-form-field>
-                </td>
-                <td colspan="1">
-                    <mat-slider class="fullWidthField"
-                        thumbLabel
-                        [displayWith]="showValue"
-                        step="1"
-                        color="primary"
-                        min="-100"
-                        [(ngModel)]="receiverSensitivity"
-                        max="100"
-                        aria-label="units"></mat-slider>
-                </td>
-            </tr>
-        </table>
-    </mat-card-content>
-  <mat-card-actions>
-    <button mat-button (click)="saveCurrentState()" color="primary">Зафіксувати</button>
-    <button mat-button (click)="clearStorage()" color="primary">Очистити</button>
-  </mat-card-actions>
-</mat-card>
-<mat-card class="resultForm" style="width: 250px">
-    <mat-card-header>
-        <mat-card-title>Результуючі значення</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <mat-form-field *ngIf="isDistanceSetMode" class="fullWidthField">
-            <mat-label>Потужність на вході приймача, Вт</mat-label>
-            <input matInput readonly type="number" [value]="ReceiverInputPowerRounded">
-        </mat-form-field>
-        <mat-form-field *ngIf="isDistanceSetMode" class="fullWidthField">
-            <mat-label>Мінімальна чутливість приймача, дБ/мВт</mat-label>
-            <input matInput readonly type="number" [value]="ReceiverMinimalSensitivityRounded">
-        </mat-form-field>
-        <mat-form-field *ngIf="!isDistanceSetMode" class="fullWidthField">
-            <mat-label>Максимальна відстань зв'язку</mat-label>
-            <input matInput readonly type="number" [value]="MaxTransmissionRangeRounded">
-        </mat-form-field>
-        <br>
-        <mat-form-field class="fullWidthField">
-            <mat-label>ККД передавача</mat-label>
-            <input matInput readonly type="number" [value]="TransmitterEfficiencyRounded">
-        </mat-form-field>
-        <br>
-        <mat-form-field class="fullWidthField">
-            <mat-label>Ефективна площа приймальної антени у кв.м</mat-label>
-            <input matInput readonly type="number" [value]="EffectiveReceiverSquareRounded">
-        </mat-form-field>
-        <br>
-        <mat-form-field class="fullWidthField">
-            <mat-label>ККД приймача</mat-label>
-            <input matInput readonly type="number" [value]="ReceiverEfficiencyRounded">
-        </mat-form-field>
-    </mat-card-content>
-</mat-card>
-<div style="float: right;">
-    <div id="thirdGraph"></div>
-    <mat-form-field>
-        <mat-label>Співвідношення x:y</mat-label>
-        <input type="number" matInput [(ngModel)]="axisScale1">
-    </mat-form-field>
-</div>
-<div style="float: right;">
-    <div id="efficiencyGraph"></div>
-    <mat-form-field>
-        <mat-label>Співвідношення x:y</mat-label>
-        <input type="number" matInput [(ngModel)]="axisScale2">
-    </mat-form-field>
-</div>
 <div>
+    <mat-card class="resultForm mainFormLeft">
+        <mat-card-header>
+            <mat-card-title>ДОСЛІДЖЕННЯ ПОШИРЕННЯ РАДІОХВИЛЬ
+        У ВІЛЬНОМУ ПРОСТОРІ</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <table class="fullWidthField" cellspacing="0">
+                <tr>
+                    <td>
+                        <mat-form-field class="fullWidthField">
+                            <mat-label>Частота</mat-label>
+                            <input matInput type="number" [(ngModel)]="frequency" value="0">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="fullWidthField">
+                            <mat-label>Одиниці виміру</mat-label>
+                            <mat-select [(value)]="frequencyMap">
+                                <mat-option *ngFor="let vl of valuesMap" [value]="vl">
+                                    {{vl}}Hz
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <mat-slider class="fullWidthField"
+                            thumbLabel
+                            [displayWith]="showValue"
+                            step="1"
+                            color="primary"
+                            min="0"
+                            [(ngModel)]="frequency"
+                            max="1000"
+                            aria-label="units"></mat-slider>
+                    </td>
+                </tr>
+            </table>
+            <table class="fullWidthField" cellspacing="0">
+                <tr>
+                    <td>
+                        <mat-form-field class="fullWidthField">
+                            <mat-label>Потужність передавача</mat-label>
+                            <input matInput type="number" [(ngModel)]="transmitterPower" value="0">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="fullWidthField">
+                            <mat-label>Одиниці виміру</mat-label>
+                            <mat-select [(value)]="transmitterPowerMap">
+                                <mat-option *ngFor="let vl of valuesMap" [value]="vl">
+                                    {{vl}}W
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <mat-slider class="fullWidthField"
+                            thumbLabel
+                            [displayWith]="showValue"
+                            step="1"
+                            color="primary"
+                            min="0"
+                            [(ngModel)]="transmitterPower"
+                            max="1000"
+                            aria-label="units"></mat-slider>
+                    </td>
+                </tr>
+            </table>
+            <mat-accordion multi>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Передаюча антена</mat-panel-title>
+                        <mat-panel-description>Основні параметри передаючої антени</mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <table class="fullWidthField" cellspacing="0">
+                        <tr>
+                            <td colspan="1">
+                                <mat-form-field class="fullWidthField">
+                                    <mat-label>КНД в дБ</mat-label>
+                                    <input matInput type="number" [(ngModel)]="transmitterDirectionalFactor" value="0">
+                                </mat-form-field>
+                            </td>
+                            <td colspan="1">
+                                <mat-slider class="fullWidthField"
+                                    thumbLabel
+                                    [displayWith]="showValue"
+                                    step="0.1"
+                                    color="primary"
+                                    min="0"
+                                    [(ngModel)]="transmitterDirectionalFactor"
+                                    max="100"
+                                    aria-label="units"></mat-slider>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <mat-form-field class="fullWidthField">
+                                    <mat-label>КСХ</mat-label>
+                                    <input matInput type="number" [(ngModel)]="transmitterSWR" value="0">
+                                </mat-form-field>
+                            </td>
+                            <td colspan="1">
+                                <mat-slider class="fullWidthField"
+                                    thumbLabel
+                                    [displayWith]="showValue"
+                                    step="0.1"
+                                    color="primary"
+                                    min="0"
+                                    [(ngModel)]="transmitterSWR"
+                                    max="10"
+                                    aria-label="units"></mat-slider>
+                            </td>
+                        </tr>
+                    </table>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Приймаюча антена</mat-panel-title>
+                        <mat-panel-description>Основні параметри приймаючої антени</mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <table class="fullWidthField" cellspacing="0">
+                        <tr>
+                            <td colspan="1">
+                                <mat-form-field class="fullWidthField">
+                                    <mat-label>КНД в дБ</mat-label>
+                                    <input matInput type="number" [(ngModel)]="receiverDirectionalFactor" value="0">
+                                </mat-form-field>
+                            </td>
+                            <td colspan="1">
+                                <mat-slider class="fullWidthField"
+                                    thumbLabel
+                                    [displayWith]="showValue"
+                                    step="0.1"
+                                    color="primary"
+                                    min="0"
+                                    [(ngModel)]="receiverDirectionalFactor"
+                                    max="100"
+                                    aria-label="units"></mat-slider>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <mat-form-field class="fullWidthField">
+                                    <mat-label>КСХ</mat-label>
+                                    <input matInput type="number" [(ngModel)]="receiverSWR" value="0">
+                                </mat-form-field>
+                            </td>
+                            <td colspan="1">
+                                <mat-slider class="fullWidthField"
+                                    thumbLabel
+                                    [displayWith]="showValue"
+                                    step="0.1"
+                                    color="primary"
+                                    min="0"
+                                    [(ngModel)]="receiverSWR"
+                                    max="10"
+                                    aria-label="units"></mat-slider>
+                            </td>
+                        </tr>
+                    </table>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Фідер передавача</mat-panel-title>
+                        <mat-panel-description>Основні параметри фідера передавача</mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <table class="fullWidthField" cellspacing="0">
+                        <tr>
+                            <td colspan="1">
+                                <mat-form-field class="fullWidthField">
+                                    <mat-label>Погонне затухання в дБ/м</mat-label>
+                                    <input matInput type="number" [(ngModel)]="transmitterLinearAttenuation" value="0">
+                                </mat-form-field>
+                            </td>
+                            <td colspan="1">
+                                <mat-slider class="fullWidthField"
+                                    thumbLabel
+                                    [displayWith]="showValue"
+                                    step="0.01"
+                                    color="primary"
+                                    min="0"
+                                    [(ngModel)]="transmitterLinearAttenuation"
+                                    max="1"
+                                    aria-label="units"></mat-slider>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field class="fullWidthField">
+                                    <mat-label>Довжина антени</mat-label>
+                                    <input matInput type="number" [(ngModel)]="transmitterAntennaLength" value="0">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="fullWidthField">
+                                    <mat-label>Одиниці виміру</mat-label>
+                                    <mat-select [(value)]="transmitterAntennaLengthMap">
+                                        <mat-option *ngFor="let vl of valuesMap" [value]="vl">
+                                            {{vl}}m
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <mat-slider class="fullWidthField"
+                                    thumbLabel
+                                    [displayWith]="showValue"
+                                    step="1"
+                                    color="primary"
+                                    min="0"
+                                    [(ngModel)]="transmitterAntennaLength"
+                                    max="1000"
+                                    aria-label="units"></mat-slider>
+                            </td>
+                        </tr>
+                    </table>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Фідер приймача</mat-panel-title>
+                        <mat-panel-description>Основні параметри фідера приймача</mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <table class="fullWidthField" cellspacing="0">
+                        <tr>
+                            <td colspan="1">
+                                <mat-form-field class="fullWidthField">
+                                    <mat-label>Погонне затухання в дБ/м</mat-label>
+                                    <input matInput type="number" [(ngModel)]="receiverLinearAttenuation" value="0">
+                                </mat-form-field>
+                            </td>
+                            <td colspan="1">
+                                <mat-slider class="fullWidthField"
+                                    thumbLabel
+                                    [displayWith]="showValue"
+                                    step="0.01"
+                                    color="primary"
+                                    min="0"
+                                    [(ngModel)]="receiverLinearAttenuation"
+                                    max="1"
+                                    aria-label="units"></mat-slider>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field class="fullWidthField">
+                                    <mat-label>Довжина антени</mat-label>
+                                    <input matInput type="number" [(ngModel)]="receiverAntennaLength" value="0">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="fullWidthField">
+                                    <mat-label>Одиниці виміру</mat-label>
+                                    <mat-select [(value)]="receiverAntennaLengthMap">
+                                        <mat-option *ngFor="let vl of valuesMap" [value]="vl">
+                                            {{vl}}m
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <mat-slider class="fullWidthField"
+                                    thumbLabel
+                                    [displayWith]="showValue"
+                                    step="1"
+                                    color="primary"
+                                    min="0"
+                                    [(ngModel)]="receiverAntennaLength"
+                                    max="1000"
+                                    aria-label="units"></mat-slider>
+                            </td>
+                        </tr>
+                    </table>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <br>
+            <table class="fullWidthField" cellspacing="0">
+                <tr>
+                    <td colspan="2">
+                        <mat-slide-toggle class="fullWidthField" color="primary" [(ngModel)]="isDistanceSetMode">
+                            {{calcSetMode}}
+                        </mat-slide-toggle>
+                    </td>
+                </tr>
+                <tr *ngIf="isDistanceSetMode">
+                    <td>
+                        <mat-form-field class="fullWidthField">
+                            <mat-label>Відстань</mat-label>
+                            <input matInput type="number" [(ngModel)]="distance" value="0">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="fullWidthField">
+                            <mat-label>Одиниці виміру</mat-label>
+                            <mat-select [(value)]="distanceMap">
+                                <mat-option *ngFor="let vl of valuesMap" [value]="vl">
+                                    {{vl}}m
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr *ngIf="isDistanceSetMode">
+                    <td colspan="2">
+                        <mat-slider class="fullWidthField"
+                                    thumbLabel
+                                    [displayWith]="showValue"
+                                    step="1"
+                                    color="primary"
+                                    min="0"
+                                    [(ngModel)]="distance"
+                                    max="1000"
+                                    aria-label="units"></mat-slider>
+                    </td>
+                </tr>
+                <tr *ngIf="!isDistanceSetMode">
+                    <td colspan="1">
+                        <mat-form-field class="fullWidthField">
+                            <mat-label>Чутливість приймача в дБ/мВт</mat-label>
+                            <input matInput type="number" [(ngModel)]="receiverSensitivity" value="0">
+                        </mat-form-field>
+                    </td>
+                    <td colspan="1">
+                        <mat-slider class="fullWidthField"
+                            thumbLabel
+                            [displayWith]="showValue"
+                            step="1"
+                            color="primary"
+                            min="-100"
+                            [(ngModel)]="receiverSensitivity"
+                            max="100"
+                            aria-label="units"></mat-slider>
+                    </td>
+                </tr>
+            </table>
+        </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="saveCurrentState()" color="primary">Зафіксувати</button>
+        <button mat-button (click)="clearStorage()" color="primary">Очистити</button>
+    </mat-card-actions>
+    </mat-card>
+    <mat-card class="resultForm" style="width: 250px">
+        <mat-card-header>
+            <mat-card-title>Результуючі значення</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-form-field *ngIf="isDistanceSetMode" class="fullWidthField">
+                <mat-label>Потужність на вході приймача, Вт</mat-label>
+                <input matInput readonly type="number" [value]="ReceiverInputPowerRounded">
+            </mat-form-field>
+            <mat-form-field *ngIf="isDistanceSetMode" class="fullWidthField">
+                <mat-label>Мінімальна чутливість приймача, дБ/мВт</mat-label>
+                <input matInput readonly type="number" [value]="ReceiverMinimalSensitivityRounded">
+            </mat-form-field>
+            <mat-form-field *ngIf="!isDistanceSetMode" class="fullWidthField">
+                <mat-label>Максимальна відстань зв'язку</mat-label>
+                <input matInput readonly type="number" [value]="MaxTransmissionRangeRounded">
+            </mat-form-field>
+            <br>
+            <mat-form-field class="fullWidthField">
+                <mat-label>ККД передавача</mat-label>
+                <input matInput readonly type="number" [value]="TransmitterEfficiencyRounded">
+            </mat-form-field>
+            <br>
+            <mat-form-field class="fullWidthField">
+                <mat-label>Ефективна площа приймальної антени у кв.м</mat-label>
+                <input matInput readonly type="number" [value]="EffectiveReceiverSquareRounded">
+            </mat-form-field>
+            <br>
+            <mat-form-field class="fullWidthField">
+                <mat-label>ККД приймача</mat-label>
+                <input matInput readonly type="number" [value]="ReceiverEfficiencyRounded">
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
+</div>
+<div style="float: right;">
+    <div>
+        <div id="thirdGraph"></div>
+        <mat-form-field>
+            <mat-label>Співвідношення x:y</mat-label>
+            <input type="number" matInput [(ngModel)]="axisScale1">
+        </mat-form-field>
+    </div>
+    <div>
+        <div id="efficiencyGraph"></div>
+        <mat-form-field>
+            <mat-label>Співвідношення x:y</mat-label>
+            <input type="number" matInput [(ngModel)]="axisScale2">
+        </mat-form-field>
+    </div>
     <mat-accordion>
         <mat-expansion-panel hideToggle>
             <mat-expansion-panel-header>
