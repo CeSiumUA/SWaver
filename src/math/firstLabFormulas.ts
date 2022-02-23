@@ -6,7 +6,9 @@ export class FirstLabCalculation{
     }
 
     public static CalculateEfficiencyFunction(linearAttenuation: number, swr: number): string{
-      return `(10^(-1 * ${linearAttenuation} * x/10)) * (1 - ((${swr} - 1)/(${swr} + 1))^2)`
+      const numerator1 = (1 - Math.pow((swr - 1)/(swr + 1), 2))
+      const numerator2 = -0.1 * linearAttenuation;
+      return `${numerator1} * 10^(${numerator2} * x)`
     }
     public static CalculateRange(transmittingPower: number,
                                  transmitterDirectionalFactor: number,

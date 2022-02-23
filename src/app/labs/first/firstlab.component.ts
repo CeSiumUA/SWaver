@@ -1,17 +1,15 @@
-import { AfterContentInit, Component, OnInit } from '@angular/core';
-import { utils } from 'protractor';
+import { Component, OnInit } from '@angular/core';
 import { MetricPrefixes, Utilities, lightSpeed } from '../../../math/values';
 import { FirstLabCalculation } from '../../../math/firstLabFormulas';
-import { /* ChartDataSets, */ ChartOptions, ChartType, Chart, registerables } from 'chart.js';
+import { Chart } from 'chart.js';
 import { ChartConfiguration } from 'chart.js';
 import { GraphPoint } from '../../../models/GraphPoint';
-import {retry} from 'rxjs/operators';
 import {FirstLabModel} from '../../../models/firstLabModel';
-import {stat} from 'fs';
 import {Utils} from '../../../models/utils';
 import functionPlot from 'function-plot';
 import {FunctionPlotDatum, FunctionPlotOptions} from 'function-plot/dist/types';
-import {fn} from '@angular/compiler/src/output/output_ast';
+import { polyline } from 'function-plot/dist/graph-types';
+import { FUNCTION_TYPE } from '@angular/compiler/src/output/output_ast';
 
 @Component({
     selector: 'firstlab-app',
@@ -520,6 +518,7 @@ export class FirstLabComponent implements OnInit{
       return {
         fn: x.efficiencyGraphFunction,
         color: x.color,
+        graphType: 'polyline',
         range: [0, Infinity]
       };
     });
