@@ -395,43 +395,43 @@
         <table mat-table [dataSource]="graphValues">
             <ng-container matColumnDef="frequency">
                 <th mat-header-cell *matHeaderCellDef>Частота</th>
-                <td mat-cell *matCellDef="let element"><p>{{element.frequency.value}} {{element.frequency.prefix}}Hz</p></td>
+                <td mat-cell *matCellDef="let element"><p [style.color]="element.graphColor">{{element.frequency.value}} {{element.frequency.prefix}}Hz</p></td>
             </ng-container>
             <ng-container matColumnDef="transmitterPower">
                 <th mat-header-cell *matHeaderCellDef>Потужність передавача</th>
-                <td mat-cell *matCellDef="let element"><p>{{element.transmitterPower.value}} {{element.transmitterPower.prefix}}W</p></td>
+                <td mat-cell *matCellDef="let element"><p [style.color]="element.graphColor">{{element.transmitterPower.value}} {{element.transmitterPower.prefix}}W</p></td>
             </ng-container>
             <ng-container matColumnDef="transmitterDirectionalFactor">
                 <th mat-header-cell *matHeaderCellDef>КНД передавача</th>
-                <td mat-cell *matCellDef="let element"><p>{{element.transmitterDirectionalFactor}} dB</p></td>
+                <td mat-cell *matCellDef="let element"><p [style.color]="element.graphColor">{{element.transmitterDirectionalFactor}} dB</p></td>
             </ng-container>
             <ng-container matColumnDef="transmitterSWR">
                 <th mat-header-cell *matHeaderCellDef>КСХ передавача</th>
-                <td mat-cell *matCellDef="let element"><p>{{element.transmitterSWR}}</p></td>
+                <td mat-cell *matCellDef="let element"><p [style.color]="element.graphColor">{{element.transmitterSWR}}</p></td>
             </ng-container>
             <ng-container matColumnDef="receiverDirectionalFactor">
                 <th mat-header-cell *matHeaderCellDef>КНД приймача</th>
-                <td mat-cell *matCellDef="let element"><p>{{element.receiverDirectionalFactor}} dB</p></td>
+                <td mat-cell *matCellDef="let element"><p [style.color]="element.graphColor">{{element.receiverDirectionalFactor}} dB</p></td>
             </ng-container>
             <ng-container matColumnDef="receiverSWR">
                 <th mat-header-cell *matHeaderCellDef>КСХ приймача</th>
-                <td mat-cell *matCellDef="let element"><p>{{element.receiverSWR}}</p></td>
+                <td mat-cell *matCellDef="let element"><p [style.color]="element.graphColor">{{element.receiverSWR}}</p></td>
             </ng-container>
             <ng-container matColumnDef="transmitterLinearAttenuation">
                 <th mat-header-cell *matHeaderCellDef>Затухання в фідері</th>
-                <td mat-cell *matCellDef="let element"><p>{{element.transmitterLinearAttenuation}} dB/m</p></td>
+                <td mat-cell *matCellDef="let element"><p [style.color]="element.graphColor">{{element.transmitterLinearAttenuation}} dB/m</p></td>
             </ng-container>
             <ng-container matColumnDef="transmitterAntennaLength">
                 <th mat-header-cell *matHeaderCellDef>Довжина фідера передавача</th>
-                <td mat-cell *matCellDef="let element"><p>{{element.transmitterAntennaLength.value}} {{element.transmitterAntennaLength.prefix}}m</p></td>
+                <td mat-cell *matCellDef="let element"><p [style.color]="element.graphColor">{{element.transmitterAntennaLength.value}} {{element.transmitterAntennaLength.prefix}}m</p></td>
             </ng-container>
             <ng-container matColumnDef="receiverLinearAttenuation">
                 <th mat-header-cell *matHeaderCellDef>Затухання в фідері</th>
-                <td mat-cell *matCellDef="let element"><p>{{element.receiverLinearAttenuation}} dB/m</p></td>
+                <td mat-cell *matCellDef="let element"><p [style.color]="element.graphColor">{{element.receiverLinearAttenuation}} dB/m</p></td>
             </ng-container>
             <ng-container matColumnDef="receiverAntennaLength">
                 <th mat-header-cell *matHeaderCellDef>Довжина фідера приймача</th>
-                <td mat-cell *matCellDef="let element"><p>{{element.receiverAntennaLength.value}} {{element.receiverAntennaLength.prefix}}m</p></td>
+                <td mat-cell *matCellDef="let element"><p [style.color]="element.graphColor">{{element.receiverAntennaLength.value}} {{element.receiverAntennaLength.prefix}}m</p></td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayGraphHistoryColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayGraphHistoryColumns;"></tr>
